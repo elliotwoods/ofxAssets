@@ -22,13 +22,14 @@ appFolder/data/assets/fonts - place any font files here (ttf)
 
 ### Use ofxAssets in your code
 
-`header`
+#### header
 ```c++
 #include “ofxAssets.h”
 using namespace ofxAssets; // this is optional
 ```
 
-`source`
+#### source
+
 ```c++
 //example
 void testApp::draw() {
