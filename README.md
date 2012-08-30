@@ -51,4 +51,22 @@ AssetRegister::refresh()
 ```
 
 ## Notes
-If your asset filename is `background.png`, then you access this asset without the extension, e.g. `image("background").draw(10,10)`.
+
+### Don't write the extension into your code
+If your asset filename is `background.png`, then you access this asset without the extension, e.g. `image("background")`.
+
+### Shaders are merged
+If `phong.vert` and `phong.frag` both exist in your `assets/shaders` folder, then they will all be merged into one shader asset `shader("phong")`. This is of course true for any combinationn of fragment vertex and geometry shader files. Your filesystem is not affected by this 'merging'.
+
+### References
+The functions:
+* `image(string)`
+* `font(string, int)`
+* `shader(string)`
+
+All return non-const references to instances of relevent types, i.e.:
+* `ofImage`
+* `ofTrueTypeFont`
+* `ofShader`
+
+respectively.
