@@ -34,12 +34,12 @@ using namespace ofxAssets; // this is optional
 void testApp::draw() {
 
     // quick access to assets
-	image(“imageName”).draw(10,10);	
-	font(“fontName”, 30).drawString(“...”, 10, 10); 
-	shader(“shaderName”).begin();
+	image("imageName").draw(10,10);	
+	font("fontName", 30).drawString("...", 10, 10); 
+	shader("shaderName").begin();
     
     // if you don’t put ‘using namespace ofxAssets’ at the top of your source or header, then use:	
-	ofxAssets::image(“imageName”).draw(10,10);
+	ofxAssets::image("imageName").draw(10,10);
 }
 ```
 
@@ -50,4 +50,4 @@ AssetRegister::refresh()
 ```
 
 ## Notes
-If your asset filename is like `background.png`, then you access this asset without the extension, e.g. `image(“background”).draw(10,10)`.
+If your asset filename is `background.png`, then you access this asset without the extension, e.g. `image("background").draw(10,10)`.
