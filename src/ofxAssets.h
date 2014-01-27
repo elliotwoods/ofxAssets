@@ -10,10 +10,10 @@
 #include "ofEvents.h"
 
 #include <map>
+#include <set>
 #include <string>
 
 namespace ofxAssets {
-
 	class Register {
 	public:
 		Register();
@@ -23,11 +23,20 @@ namespace ofxAssets {
 		ofShader & getShader(string name);
 		ofTrueTypeFont & getFont(string name, int size);
 		
-		ofEvent<Register> evtLoad;
+		/// Load assets for an addon, e.g.:
+		///		data/ofxMultiTrack/images/0.png
+		/// becomes
+		///		image("ofxMultiTrack::0")
+		void addAddon(string addonName);
 		
+		ofEvent<Register> evtLoad;
+
 	protected:
 		void setup(ofEventArgs &);
-		void init();
+		void loadAssets(string addon = "");
+
+		set<string> addonList;
+
 		map<string, ofImage> images;
 		map<string, ofShader> shaders;
 		map<string, string> fontFilenames;

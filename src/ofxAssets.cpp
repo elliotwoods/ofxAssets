@@ -5,6 +5,7 @@
 #include "ofxAssets.h"
 
 namespace ofxAssets {
+#pragma mark public
 	//---------
 	Register AssetRegister = Register();
 	
@@ -12,14 +13,75 @@ namespace ofxAssets {
 	Register::Register() {
 		ofAddListener(ofEvents().setup, this, & Register::setup);
 	}
-	
+
 	//---------
-	void Register::setup(ofEventArgs &) {
-		this->init();
+	void Register::refresh() {
+		this->shaders.clear();
+		this->images.clear();
+		this->fonts.clear();
+		this->loadAssets();
+		for(auto addon : this->addonList) {
+			this->loadAssets(addon);
+		}
 	}
 	
 	//---------
-	void Register::init() {
+	ofImage & Register::getImage(string name) {
+		if (this->images.count(name) != 0)
+			return this->images[name];
+		else {
+			ofLogError("ofxAssets") << "Requested image asset'" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
+			return  this->blankImage;
+		}
+	}
+
+	//---------
+	ofShader & Register::getShader(string name) {
+		if (this->shaders.count(name) != 0)
+			return this->shaders[name];
+		else {
+			ofLogError("ofxAssets") << "Requested shader asset'" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
+			return  this->blankShader;
+		}
+	}
+
+	//---------
+	ofTrueTypeFont & Register::getFont(string name, int size) {
+		pair<string, int> id = pair<string, int>(name, size);
+		if (this->fonts.count(id) > 0) {
+			return this->fonts[id];
+		} else if (this->fontFilenames.count(name) > 0) {
+			this->fonts.insert(pair<pair<string,int>,ofTrueTypeFont>(id, ofTrueTypeFont()));
+			this->fonts[id].loadFont(this->fontFilenames[name], size);
+			ofLogNotice("ofxAssets") << "Loaded font asset '" << name << "' (" << size << ")" << endl;
+			return this->fonts[id];
+		} else {
+			ofLogError("ofxAssets") << "Requested font asset'" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
+			return this->blankFont;
+		}
+	}
+
+	//---------
+	void Register::addAddon(string addonName) {
+		this->addonList.insert(addonName);
+		this->loadAssets(addonName);
+	}
+
+#pragma mark protected
+	//---------
+	void Register::setup(ofEventArgs &) {
+		this->loadAssets();
+	}
+	
+	//---------
+	void transformName(string &name, string addonName) {
+		if (!addonName.empty()) {
+			name = addonName + "::" + name;
+		}
+	}
+
+	//---------
+	void Register::loadAssets(string addon) {
 		ofLogNotice("ofxAssets") << "//--------------------";
 		ofLogNotice("ofxAssets") << "//ofxAssets::init";
 		ofLogNotice("ofxAssets") << "//--------------------";
@@ -29,9 +91,13 @@ namespace ofxAssets {
 		ofDirectory files;
 		
 		string dataPath = "assets";
+		if (addon.size() > 0) {
+			dataPath += "/" + addon;
+		}
+
 		if (!ofDirectory::doesDirectoryExist(dataPath))
 		{
-			ofLogError("ofxAssets") << "Assets data path cannot be found. Be sure to have a ./assets subfolder inside your app's data/ folder if you want to use ofxAssets";
+			ofLogNotice("ofxAssets") << "Assets data path cannot be found. Be sure to have a ./assets subfolder inside your app's data/ folder if you want to use ofxAssets";
 			return;
 		}
 		
@@ -46,7 +112,8 @@ namespace ofxAssets {
 			extension = ofFilePath::getFileExt(filename);
 			withoutExtension = filename.substr(0, filename.length() - extension.length() - 1);
 			name = ofFilePath::getBaseName(filename);
-			
+			transformName(name, addon);
+
 			if (!(extension == "png" || extension == "jpeg" || extension == "jpg"))
 				continue;
 			
@@ -75,6 +142,7 @@ namespace ofxAssets {
 			extension = ofFilePath::getFileExt(filename);
 			withoutExtension = filename.substr(0, filename.length() - extension.length() - 1);
 			name = ofFilePath::getBaseName(filename);
+			transformName(name, addon);
 			
 			if (!(extension == "vert" || extension == "frag" || extension == "geom"))
 				continue;
@@ -109,6 +177,7 @@ namespace ofxAssets {
 			extension = ofFilePath::getFileExt(filename);
 			withoutExtension = filename.substr(0, filename.length() - extension.length() - 1);
 			name = ofFilePath::getBaseName(filename);
+			transformName(name, addon);
 			
 			if (!(extension == "ttf"))
 				continue;
@@ -128,48 +197,5 @@ namespace ofxAssets {
 		ofLogNotice("ofxAssets") << "//--------------------";
 		
 		ofNotifyEvent(evtLoad, *this, this);
-	}
-	
-	//---------
-	void Register::refresh() {
-		this->shaders.clear();
-		this->images.clear();
-		this->fonts.clear();
-		this->init();
-	}
-
-	//---------
-	ofShader & Register::getShader(string name) {
-		if (this->shaders.count(name) != 0)
-			return this->shaders[name];
-		else {
-			ofLogError("ofxAssets") << "Requested shader asset'" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
-			return  this->blankShader;
-		}
-	}
-	
-	//---------
-	ofImage & Register::getImage(string name) {
-		if (this->images.count(name) != 0)
-			return this->images[name];
-		else {
-			ofLogError("ofxAssets") << "Requested image asset'" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
-			return  this->blankImage;
-		}
-	}
-
-	//---------
-	ofTrueTypeFont & Register::getFont(string name, int size) {
-		pair<string, int> id = pair<string, int>(name, size);
-		if (this->fonts.count(id) > 0) {
-			return this->fonts[id];
-		} else if (this->fontFilenames.count(name) > 0) {
-			this->fonts.insert(pair<pair<string,int>,ofTrueTypeFont>(id, ofTrueTypeFont()));
-			this->fonts[id].loadFont(this->fontFilenames[name], size);
-			ofLogNotice("ofxAssets") << "Loaded font asset '" << name << "' (" << size << ")" << endl;
-		} else {
-			ofLogError("ofxAssets") << "Requested font asset'" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
-			return  this->blankFont;
-		}
 	}
 }
