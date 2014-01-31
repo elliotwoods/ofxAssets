@@ -105,26 +105,28 @@ namespace ofxAssets {
 		//images
 		////
 		//
-		folder = dataPath + "/images/";
-		files.listDir(folder);
-		for (int i=0; i<files.size(); i++) {
-			filename = files.getPath(i);
-			extension = ofFilePath::getFileExt(filename);
-			withoutExtension = filename.substr(0, filename.length() - extension.length() - 1);
-			name = ofFilePath::getBaseName(filename);
-			transformName(name, addon);
+		folder = ofToDataPath(dataPath + "/images/", true);
+		if (ofDirectory::doesDirectoryExist(folder)) {
+			files.listDir(folder);
+			for (int i=0; i<files.size(); i++) {
+				filename = files.getPath(i);
+				extension = ofFilePath::getFileExt(filename);
+				withoutExtension = filename.substr(0, filename.length() - extension.length() - 1);
+				name = ofFilePath::getBaseName(filename);
+				transformName(name, addon);
 
-			if (!(extension == "png" || extension == "jpeg" || extension == "jpg"))
-				continue;
+				if (!(extension == "png" || extension == "jpeg" || extension == "jpg"))
+					continue;
 			
-			if (this->images.count(name) > 0)
-				continue;
+				if (this->images.count(name) > 0)
+					continue;
 			
-			this->images.insert(pair<string, ofImage>(name, ofImage()));
+				this->images.insert(pair<string, ofImage>(name, ofImage()));
 			
-			this->images[name].loadImage(filename);
+				this->images[name].loadImage(filename);
 			
-			ofLogNotice("ofxAssets") << "Loaded image asset '" << name << "'" << endl;
+				ofLogNotice("ofxAssets") << "Loaded image asset '" << name << "'" << endl;
+			}
 		}
 		//
 		////
@@ -135,32 +137,34 @@ namespace ofxAssets {
 		////
 		//
 		folder = ofToDataPath(dataPath + "/shaders/", true);
-		bool hasFrag, hasVert;
-		files.listDir(folder);
-		for (int i=0; i<files.size(); i++) {
-			filename = files.getPath(i);
-			extension = ofFilePath::getFileExt(filename);
-			withoutExtension = filename.substr(0, filename.length() - extension.length() - 1);
-			name = ofFilePath::getBaseName(filename);
-			transformName(name, addon);
+		if (ofDirectory::doesDirectoryExist(folder)) {
+			files.listDir(folder);
+			bool hasFrag, hasVert;
+			for (int i=0; i<files.size(); i++) {
+				filename = files.getPath(i);
+				extension = ofFilePath::getFileExt(filename);
+				withoutExtension = filename.substr(0, filename.length() - extension.length() - 1);
+				name = ofFilePath::getBaseName(filename);
+				transformName(name, addon);
 			
-			if (!(extension == "vert" || extension == "frag" || extension == "geom"))
-				continue;
+				if (!(extension == "vert" || extension == "frag" || extension == "geom"))
+					continue;
 			
-			if (this->shaders.count(name) > 0)
-				continue;
+				if (this->shaders.count(name) > 0)
+					continue;
 			
-			this->shaders.insert(pair<string, ofShader>(name, ofShader()));
+				this->shaders.insert(pair<string, ofShader>(name, ofShader()));
 			
-			if (ofFile::doesFileExist(withoutExtension + ".frag"))
-				this->shaders[name].setupShaderFromFile(GL_FRAGMENT_SHADER, withoutExtension + ".frag");
-			if (ofFile::doesFileExist(withoutExtension + ".vert"))
-				this->shaders[name].setupShaderFromFile(GL_VERTEX_SHADER, withoutExtension + ".vert");
-			if (ofFile::doesFileExist(withoutExtension + ".geom"))
-				this->shaders[name].setupShaderFromFile(GL_GEOMETRY_SHADER, withoutExtension + ".geom");
-			this->shaders[name].linkProgram();
+				if (ofFile::doesFileExist(withoutExtension + ".frag"))
+					this->shaders[name].setupShaderFromFile(GL_FRAGMENT_SHADER, withoutExtension + ".frag");
+				if (ofFile::doesFileExist(withoutExtension + ".vert"))
+					this->shaders[name].setupShaderFromFile(GL_VERTEX_SHADER, withoutExtension + ".vert");
+				if (ofFile::doesFileExist(withoutExtension + ".geom"))
+					this->shaders[name].setupShaderFromFile(GL_GEOMETRY_SHADER, withoutExtension + ".geom");
+				this->shaders[name].linkProgram();
 							
-			ofLogNotice("ofxAssets") << "Loaded shader asset '" << name << "'" << endl;
+				ofLogNotice("ofxAssets") << "Loaded shader asset '" << name << "'" << endl;
+			}
 		}
 		//
 		////
@@ -171,23 +175,25 @@ namespace ofxAssets {
 		////
 		//
 		folder = ofToDataPath(dataPath + "/fonts/", true);
-		files.listDir(folder);
-		for (int i=0; i<files.size(); i++) {
-			filename = files.getPath(i);
-			extension = ofFilePath::getFileExt(filename);
-			withoutExtension = filename.substr(0, filename.length() - extension.length() - 1);
-			name = ofFilePath::getBaseName(filename);
-			transformName(name, addon);
+		if (ofDirectory::doesDirectoryExist(folder)) {
+			files.listDir(folder);
+			for (int i=0; i<files.size(); i++) {
+				filename = files.getPath(i);
+				extension = ofFilePath::getFileExt(filename);
+				withoutExtension = filename.substr(0, filename.length() - extension.length() - 1);
+				name = ofFilePath::getBaseName(filename);
+				transformName(name, addon);
 			
-			if (!(extension == "ttf"))
-				continue;
+				if (!(extension == "ttf"))
+					continue;
 			
-			if (this->fontFilenames.count(name) > 0)
-				continue;
+				if (this->fontFilenames.count(name) > 0)
+					continue;
 			
-			this->fontFilenames.insert(pair<string, string>(name, filename));
+				this->fontFilenames.insert(pair<string, string>(name, filename));
 			
-			ofLogNotice("ofxAssets") << "Found font asset '" << name << "'" << endl;
+				ofLogNotice("ofxAssets") << "Found font asset '" << name << "'" << endl;
+			}
 		}
 		//
 		////
