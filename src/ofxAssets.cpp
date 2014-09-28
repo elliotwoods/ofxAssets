@@ -62,7 +62,7 @@ namespace ofxAssets {
 			return this->fonts[id];
 		} else if (this->fontFilenames.count(name) > 0) {
 			this->fonts.insert(pair<pair<string,int>,ofTrueTypeFont>(id, ofTrueTypeFont()));
-			this->fonts[id].loadFont(this->fontFilenames[name], size);
+			this->fonts[id].loadFont(this->fontFilenames[name], size, true, true, true);
 			ofLogNotice("ofxAssets") << "Loaded font asset '" << name << "' (" << size << ")" << endl;
 			return this->fonts[id];
 		} else {
