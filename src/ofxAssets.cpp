@@ -11,6 +11,7 @@ namespace ofxAssets {
 	
 	//---------
 	Register::Register() {
+		this->initialised = false;
 		ofAddListener(ofEvents().setup, this, & Register::setup);
 	}
 
@@ -27,6 +28,9 @@ namespace ofxAssets {
 	
 	//---------
 	ofImage & Register::getImage(string name) {
+		if (!this->initialised) {
+			this->loadAssets();
+		}
 		if (this->images.count(name) != 0)
 			return this->images[name];
 		else {
@@ -37,6 +41,9 @@ namespace ofxAssets {
 
 	//---------
 	ofShader & Register::getShader(string name) {
+		if (!this->initialised) {
+			this->loadAssets();
+		}
 		if (this->shaders.count(name) != 0)
 			return this->shaders[name];
 		else {
@@ -47,12 +54,15 @@ namespace ofxAssets {
 
 	//---------
 	ofTrueTypeFont & Register::getFont(string name, int size) {
+		if (!this->initialised) {
+			this->loadAssets();
+		}
 		pair<string, int> id = pair<string, int>(name, size);
 		if (this->fonts.count(id) > 0) {
 			return this->fonts[id];
 		} else if (this->fontFilenames.count(name) > 0) {
 			this->fonts.insert(pair<pair<string,int>,ofTrueTypeFont>(id, ofTrueTypeFont()));
-			this->fonts[id].loadFont(this->fontFilenames[name], size);
+			this->fonts[id].loadFont(this->fontFilenames[name], size, true, true, true);
 			ofLogNotice("ofxAssets") << "Loaded font asset '" << name << "' (" << size << ")" << endl;
 			return this->fonts[id];
 		} else {
@@ -79,7 +89,9 @@ namespace ofxAssets {
 #pragma mark protected
 	//---------
 	void Register::setup(ofEventArgs &) {
-		this->loadAssets();
+		if (!this->initialised) {
+			this->loadAssets();
+		}
 	}
 	
 	//---------
@@ -148,7 +160,6 @@ namespace ofxAssets {
 		folder = ofToDataPath(dataPath + "/shaders/", true);
 		if (ofDirectory::doesDirectoryExist(folder)) {
 			files.listDir(folder);
-			bool hasFrag, hasVert;
 			for (int i=0; i<files.size(); i++) {
 				filename = files.getPath(i);
 				extension = ofFilePath::getFileExt(filename);
@@ -168,8 +179,10 @@ namespace ofxAssets {
 					this->shaders[name].setupShaderFromFile(GL_FRAGMENT_SHADER, withoutExtension + ".frag");
 				if (ofFile::doesFileExist(withoutExtension + ".vert"))
 					this->shaders[name].setupShaderFromFile(GL_VERTEX_SHADER, withoutExtension + ".vert");
+#ifndef TARGET_IPHONE_SIMULATOR
 				if (ofFile::doesFileExist(withoutExtension + ".geom"))
 					this->shaders[name].setupShaderFromFile(GL_GEOMETRY_SHADER, withoutExtension + ".geom");
+#endif
 				this->shaders[name].linkProgram();
 							
 				ofLogNotice("ofxAssets") << "Loaded shader asset '" << name << "'" << endl;
@@ -212,5 +225,9 @@ namespace ofxAssets {
 		ofLogNotice("ofxAssets") << "//--------------------";
 		
 		ofNotifyEvent(evtLoad, *this, this);
+		
+		if(addon == "") {
+			this->initialised = true;
+		}
 	}
 }

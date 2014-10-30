@@ -45,6 +45,8 @@ namespace ofxAssets {
 		ofImage blankImage;
 		ofShader blankShader;
 		ofTrueTypeFont blankFont;
+		
+		bool initialised;
 	};
 
 	extern Register AssetRegister;
