@@ -63,6 +63,15 @@ namespace ofxAssets {
 
 	//---------
 	void Register::addAddon(string addonName) {
+		//whilst we're in debug build mode, we'll actually copy over the assets from the addon's folder
+#if defined(__DEBUGGING__) || defined(_DEBUG)
+		//if we're still debugging in the build location, copy in latest assets
+		auto checkDir = ofDirectory("../../../../../addons/" + addonName + "/data/assets/");
+		if (checkDir.exists()) {
+			checkDir.copyTo(".");
+		}
+#endif
+
 		this->addonList.insert(addonName);
 		this->loadAssets(addonName);
 	}
