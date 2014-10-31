@@ -73,12 +73,21 @@ namespace ofxAssets {
 
 	//---------
 	void Register::addAddon(string addonName) {
+		if (this->addonList.find(addonName) != this->addonList.end()) {
+			ofLogWarning("ofxAddons::Register::addAddon") << "Addon [" << addonName << "] has already been added to the ofxAssets::Register.";
+			return;
+		}
+
 		//whilst we're in debug build mode, we'll actually copy over the assets from the addon's folder
 #if defined(__DEBUGGING__) || defined(_DEBUG)
 		//if we're still debugging in the build location, copy in latest assets
-		auto checkDir = ofDirectory("../../../../../addons/" + addonName + "/data/assets/");
+		auto checkDir = ofDirectory("../../../../../addons/" + addonName + "/data/assets/" + addonName);
 		if (checkDir.exists()) {
-			checkDir.copyTo(".");
+			ofLogNotice("ofxAssets") << "Copying in addon files from " << checkDir.getOriginalDirectory();
+			checkDir.copyTo("assets/" + addonName, true, true);
+		}
+		else {
+			ofLogNotice("ofxAssets") << "Cannot copy in addon assets since folder doesn't exist : " << checkDir.getOriginalDirectory();
 		}
 #endif
 
