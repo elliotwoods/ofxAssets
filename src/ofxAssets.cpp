@@ -31,9 +31,9 @@ namespace ofxAssets {
 		if (!this->initialised) {
 			this->loadAssets();
 		}
-		if (this->images.count(name) != 0)
+		if (this->images.count(name) != 0) {
 			return this->images[name];
-		else {
+		} else {
 			ofLogError("ofxAssets") << "Requested image asset'" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
 			return  this->blankImage;
 		}
@@ -44,9 +44,9 @@ namespace ofxAssets {
 		if (!this->initialised) {
 			this->loadAssets();
 		}
-		if (this->shaders.count(name) != 0)
+		if (this->shaders.count(name) != 0) {
 			return this->shaders[name];
-		else {
+		} else {
 			ofLogError("ofxAssets") << "Requested shader asset'" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
 			return  this->blankShader;
 		}
@@ -85,8 +85,7 @@ namespace ofxAssets {
 		if (checkDir.exists()) {
 			ofLogNotice("ofxAssets") << "Copying in addon files from " << checkDir.getOriginalDirectory();
 			checkDir.copyTo("assets/" + addonName, true, true);
-		}
-		else {
+		} else {
 			ofLogNotice("ofxAssets") << "Cannot copy in addon assets since folder doesn't exist : " << checkDir.getOriginalDirectory();
 		}
 #endif
@@ -125,8 +124,7 @@ namespace ofxAssets {
 			dataPath += "/" + addon;
 		}
 
-		if (!ofDirectory::doesDirectoryExist(dataPath))
-		{
+		if (!ofDirectory::doesDirectoryExist(dataPath)) {
 			ofLogNotice("ofxAssets") << "Assets data path cannot be found. Be sure to have a ./assets subfolder inside your app's data/ folder if you want to use ofxAssets";
 			return;
 		}
