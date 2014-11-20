@@ -101,7 +101,16 @@ namespace ofxAssets {
 			this->loadAssets();
 		}
 	}
-	
+
+	//---------
+	void transformName(string &name, vector<string> outputNamespace) {
+		string flatNamespace = "";
+		for (auto level : outputNamespace) {
+			flatNamespace += level + "::";
+		}
+		name = flatNamespace + name;
+	}
+
 	//---------
 	void transformName(string &name, string addonName) {
 		if (!addonName.empty()) {
@@ -120,7 +129,7 @@ namespace ofxAssets {
 		ofDirectory files;
 		
 		string dataPath = "assets";
-		if (addon.size() > 0) {
+		if (!addon.empty()) {
 			dataPath += "/" + addon;
 		}
 
@@ -129,104 +138,14 @@ namespace ofxAssets {
 			return;
 		}
 		
-		////
-		//images
-		////
-		//
-		folder = ofToDataPath(dataPath + "/images/", true);
-		if (ofDirectory::doesDirectoryExist(folder)) {
-			files.listDir(folder);
-			for (int i=0; i<files.size(); i++) {
-				filename = files.getPath(i);
-				extension = ofFilePath::getFileExt(filename);
-				withoutExtension = filename.substr(0, filename.length() - extension.length() - 1);
-				name = ofFilePath::getBaseName(filename);
-				transformName(name, addon);
+		vector<string> outputNamespace;
+		if (!addon.empty()) {
+			outputNamespace.push_back(addon);
+		}
 
-				if (!(extension == "png" || extension == "jpeg" || extension == "jpg"))
-					continue;
-			
-				if (this->images.count(name) > 0)
-					continue;
-			
-				this->images.insert(pair<string, ofImage>(name, ofImage()));
-			
-				this->images[name].loadImage(filename);
-			
-				ofLogNotice("ofxAssets") << "Loaded image asset '" << name << "'" << endl;
-			}
-		}
-		//
-		////
-		
-		
-		////
-		//shaders
-		////
-		//
-		folder = ofToDataPath(dataPath + "/shaders/", true);
-		if (ofDirectory::doesDirectoryExist(folder)) {
-			files.listDir(folder);
-			for (int i=0; i<files.size(); i++) {
-				filename = files.getPath(i);
-				extension = ofFilePath::getFileExt(filename);
-				withoutExtension = filename.substr(0, filename.length() - extension.length() - 1);
-				name = ofFilePath::getBaseName(filename);
-				transformName(name, addon);
-			
-				if (!(extension == "vert" || extension == "frag" || extension == "geom"))
-					continue;
-			
-				if (this->shaders.count(name) > 0)
-					continue;
-			
-				this->shaders.insert(pair<string, ofShader>(name, ofShader()));
-			
-				if (ofFile::doesFileExist(withoutExtension + ".frag"))
-					this->shaders[name].setupShaderFromFile(GL_FRAGMENT_SHADER, withoutExtension + ".frag");
-				if (ofFile::doesFileExist(withoutExtension + ".vert"))
-					this->shaders[name].setupShaderFromFile(GL_VERTEX_SHADER, withoutExtension + ".vert");
-#ifndef TARGET_IPHONE_SIMULATOR
-				if (ofFile::doesFileExist(withoutExtension + ".geom"))
-					this->shaders[name].setupShaderFromFile(GL_GEOMETRY_SHADER, withoutExtension + ".geom");
-#endif
-				this->shaders[name].linkProgram();
-							
-				ofLogNotice("ofxAssets") << "Loaded shader asset '" << name << "'" << endl;
-			}
-		}
-		//
-		////
-		
-		
-		////
-		//fonts
-		////
-		//
-		folder = ofToDataPath(dataPath + "/fonts/", true);
-		if (ofDirectory::doesDirectoryExist(folder)) {
-			files.listDir(folder);
-			for (int i=0; i<files.size(); i++) {
-				filename = files.getPath(i);
-				extension = ofFilePath::getFileExt(filename);
-				withoutExtension = filename.substr(0, filename.length() - extension.length() - 1);
-				name = ofFilePath::getBaseName(filename);
-				transformName(name, addon);
-			
-				if (!(extension == "ttf"))
-					continue;
-			
-				if (this->fontFilenames.count(name) > 0)
-					continue;
-			
-				this->fontFilenames.insert(pair<string, string>(name, filename));
-			
-				ofLogNotice("ofxAssets") << "Found font asset '" << name << "'" << endl;
-			}
-		}
-		//
-		////
-
+		this->traverseDirectoryImages(ofToDataPath(dataPath + "/images/", true), outputNamespace);
+		this->traverseDirectoryShaders(ofToDataPath(dataPath + "/shaders/", true), outputNamespace);
+		this->traverseDirectoryFonts(ofToDataPath(dataPath + "/fonts/", true), outputNamespace);
 		
 		ofLogNotice("ofxAssets") << "//";
 		ofLogNotice("ofxAssets") << "//--------------------";
@@ -235,6 +154,133 @@ namespace ofxAssets {
 		
 		if(addon == "") {
 			this->initialised = true;
+		}
+	}
+
+	//----------
+	void Register::traverseDirectoryImages(string dataPath, vector<string> outputNamespace) {
+		if (ofDirectory::doesDirectoryExist(dataPath)) {
+			ofDirectory files;
+			files.listDir(dataPath);
+			for (int i = 0; i<files.size(); i++) {
+				const auto filename = files.getPath(i);
+				auto outputName = ofFilePath::getBaseName(filename); 
+				
+				//check if it's a subfolder
+				if (ofDirectory(filename).isDirectory()) {
+					auto innerNamespace = outputNamespace;
+					innerNamespace.push_back(outputName);
+					this->traverseDirectoryImages(dataPath + "/" + outputName, innerNamespace);
+				}
+
+				//if not, check whether it has the right extension
+				const auto extension = ofFilePath::getFileExt(filename);
+				if (!(extension == "png" || extension == "jpeg" || extension == "jpg")) {
+					continue;
+				}
+
+				//transform the output name to include namespace
+				transformName(outputName, outputNamespace);
+
+				//insert and load the image
+				if (this->images.find(outputName) != this->images.end()) {
+					continue;
+				}
+				this->images.insert(pair<string, ofImage>(outputName, ofImage()));
+				this->images[outputName].loadImage(filename);
+
+				ofLogNotice("ofxAssets") << "Loaded image asset '" << outputName << "'" << endl;
+			}
+		}
+	}
+
+
+	//----------
+	void Register::traverseDirectoryShaders(string dataPath, vector<string> outputNamespace) {
+		if (ofDirectory::doesDirectoryExist(dataPath)) {
+			ofDirectory files;
+			files.listDir(dataPath);
+			for (int i = 0; i<files.size(); i++) {
+				const auto filename = files.getPath(i);
+				auto outputName = ofFilePath::getBaseName(filename);
+
+				//check if it's a subfolder
+				if (ofDirectory(filename).isDirectory()) {
+					auto innerNamespace = outputNamespace;
+					innerNamespace.push_back(outputName);
+					this->traverseDirectoryShaders(dataPath + "/" + outputName, innerNamespace);
+				}
+
+				//if not, check whether it has the right extension
+				const auto extension = ofFilePath::getFileExt(filename);
+				if (!(extension == "vert" || extension == "frag" || extension == "geom")) {
+					continue;
+				}
+
+				//transform the output name to include namespace
+				transformName(outputName, outputNamespace);
+
+				//check if the shader already exists (this often happens when you hit a .vert file and we've already loaded when we hit the .geom)
+				if (this->shaders.find(outputName) != this->shaders.end()) {
+					continue;
+				}
+
+				//insert the shader
+				this->shaders.insert(pair<string, ofShader>(outputName, ofShader()));
+				auto & shader = this->shaders[outputName];
+
+				//load any available shader stages
+				const auto withoutExtension = filename.substr(0, filename.length() - extension.length() - 1);
+				if (ofFile::doesFileExist(withoutExtension + ".frag"))
+					shader.setupShaderFromFile(GL_FRAGMENT_SHADER, withoutExtension + ".frag");
+				if (ofFile::doesFileExist(withoutExtension + ".vert"))
+					shader.setupShaderFromFile(GL_VERTEX_SHADER, withoutExtension + ".vert");
+#ifndef TARGET_IPHONE_SIMULATOR
+				if (ofFile::doesFileExist(withoutExtension + ".geom"))
+					shader.setupShaderFromFile(GL_GEOMETRY_SHADER, withoutExtension + ".geom");
+#endif
+				shader.linkProgram();
+
+				ofLogNotice("ofxAssets") << "Loaded shader asset '" << outputName << "'" << endl;
+			}
+		}
+	}
+
+	//----------
+	void Register::traverseDirectoryFonts(string dataPath, vector<string> outputNamespace) {
+		if (ofDirectory::doesDirectoryExist(dataPath)) {
+			ofDirectory files;
+			files.listDir(dataPath);
+			for (int i = 0; i<files.size(); i++) {
+				const auto filename = files.getPath(i);
+				auto outputName = ofFilePath::getBaseName(filename);
+
+				//check if it's a subfolder
+				if (ofDirectory(filename).isDirectory()) {
+					auto innerNamespace = outputNamespace;
+					innerNamespace.push_back(outputName);
+					this->traverseDirectoryFonts(dataPath + "/" + outputName, innerNamespace);
+				}
+
+				//if not, check whether it has the right extension
+				const auto extension = ofFilePath::getFileExt(filename);
+				if (!(extension == "ttf")) {
+					continue;
+				}
+
+				//transform the output name to include namespace
+				transformName(outputName, outputNamespace);
+
+				//check it's not already loaded
+				if (this->fontFilenames.find(outputName) != this->fontFilenames.end()) {
+					continue;
+				}
+
+				//register the font for lazy loading later
+				this->fontFilenames.insert(pair<string, string>(outputName, filename));
+
+				ofLogNotice("ofxAssets") << "Found font asset '" << outputName << "'" << endl;
+			}
 		}
 	}
 }

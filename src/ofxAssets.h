@@ -34,6 +34,10 @@ namespace ofxAssets {
 	protected:
 		void setup(ofEventArgs &);
 		void loadAssets(string addon = "");
+		
+		void traverseDirectoryImages(string dataPath, vector<string> outputNamespace);
+		void traverseDirectoryShaders(string dataPath, vector<string> outputNamespace);
+		void traverseDirectoryFonts(string dataPath, vector<string> outputNamespace);
 
 		set<string> addonList;
 
