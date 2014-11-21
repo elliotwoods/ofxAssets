@@ -23,6 +23,10 @@ namespace ofxAssets {
 		ofShader & getShader(string name);
 		ofTrueTypeFont & getFont(string name, int size);
 		
+		bool hasImage(string name);
+		bool hasShader(string name);
+		bool hasFont(string name);
+
 		/// Load assets for an addon, e.g.:
 		///		data/ofxMultiTrack/images/0.png
 		/// becomes

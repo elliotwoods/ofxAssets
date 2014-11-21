@@ -31,8 +31,9 @@ namespace ofxAssets {
 		if (!this->initialised) {
 			this->loadAssets();
 		}
-		if (this->images.count(name) != 0) {
-			return this->images[name];
+		auto findImage = this->images.find(name);
+		if (findImage != this->images.end()) {
+			return findImage->second;
 		} else {
 			ofLogError("ofxAssets") << "Requested image asset'" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
 			return  this->blankImage;
@@ -44,8 +45,9 @@ namespace ofxAssets {
 		if (!this->initialised) {
 			this->loadAssets();
 		}
-		if (this->shaders.count(name) != 0) {
-			return this->shaders[name];
+		auto findShader = this->shaders.find(name);
+		if (findShader != this->shaders.end()) {
+			return findShader->second;
 		} else {
 			ofLogError("ofxAssets") << "Requested shader asset'" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
 			return  this->blankShader;
@@ -58,17 +60,34 @@ namespace ofxAssets {
 			this->loadAssets();
 		}
 		pair<string, int> id = pair<string, int>(name, size);
-		if (this->fonts.count(id) > 0) {
-			return this->fonts[id];
-		} else if (this->fontFilenames.count(name) > 0) {
+		auto findFont = this->fonts.find(id);
+		if (findFont != this->fonts.end()) {
+			return findFont->second;
+		} else if (this->fontFilenames.find(name) != this->fontFilenames.end()) {
 			this->fonts.insert(pair<pair<string,int>,ofTrueTypeFont>(id, ofTrueTypeFont()));
-			this->fonts[id].loadFont(this->fontFilenames[name], size, true, true, true);
+			ofTrueTypeFont & font = this->fonts[id];
+			font.loadFont(this->fontFilenames[name], size, true, true, true);
 			ofLogNotice("ofxAssets") << "Loaded font asset '" << name << "' (" << size << ")" << endl;
-			return this->fonts[id];
+			return font;
 		} else {
 			ofLogError("ofxAssets") << "Requested font asset'" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
 			return this->blankFont;
 		}
+	}
+
+	//---------
+	bool Register::hasImage(string name) {
+		return this->images.find(name) != this->images.end();
+	}
+
+	//---------
+	bool Register::hasShader(string name) {
+		return this->shaders.find(name) != this->shaders.end();
+	}
+
+	//---------
+	bool Register::hasFont(string name) {
+		return this->fontFilenames.find(name) != this->fontFilenames.end();
 	}
 
 	//---------
