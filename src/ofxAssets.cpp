@@ -92,33 +92,54 @@ namespace ofxAssets {
 
 	//---------
 	void Register::addAddon(string addonName) {
+		this->init();
+		
 		if (this->addonList.find(addonName) != this->addonList.end()) {
 			ofLogWarning("ofxAddons::Register::addAddon") << "Addon [" << addonName << "] has already been added to the ofxAssets::Register.";
 			return;
 		}
+		
 
+		//--
+		//COPY FILES
+		//--
+		//
 		//whilst we're in debug build mode, we'll actually copy over the assets from the addon's folder
+		//
 #if defined(__DEBUGGING__) || defined(_DEBUG)
 		//if we're still debugging in the build location, copy in latest assets
 		auto checkDir = ofDirectory("../../../../../addons/" + addonName + "/data/assets/" + addonName);
 		if (checkDir.exists()) {
 			ofLogNotice("ofxAssets") << "Copying in addon files from " << checkDir.getOriginalDirectory();
+			
+			//clear existing folder
+			ofDirectory("assets/" + addonName).remove(true);
+			
+			//copy in current resources
 			checkDir.copyTo("assets/" + addonName, true, true);
 		} else {
 			ofLogNotice("ofxAssets") << "Cannot copy in addon assets since folder doesn't exist : " << checkDir.getOriginalDirectory();
 		}
 #endif
-
-		this->addonList.insert(addonName);
+		//
+		//--
+		
+		
+		//actually perform the load
 		this->loadAssets(addonName);
 	}
 
 #pragma mark protected
 	//---------
-	void Register::setup(ofEventArgs &) {
+	void Register::init() {
 		if (!this->initialised) {
 			this->loadAssets();
 		}
+	}
+	
+	//---------
+	void Register::setup(ofEventArgs &) {
+		this->init();
 	}
 
 	//---------
@@ -173,6 +194,8 @@ namespace ofxAssets {
 		
 		if(addon == "") {
 			this->initialised = true;
+		} else {
+			//this->addonList.insert(addon);
 		}
 	}
 
