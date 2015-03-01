@@ -67,7 +67,7 @@ namespace ofxAssets {
 			this->fonts.insert(pair<pair<string,int>,ofTrueTypeFont>(id, ofTrueTypeFont()));
 			ofTrueTypeFont & font = this->fonts[id];
 			font.loadFont(this->fontFilenames[name], size, true, true, true);
-			ofLogNotice("ofxAssets") << "Loaded font asset '" << name << "' (" << size << ")" << endl;
+			ofLogVerbose("ofxAssets") << "Loaded font asset '" << name << "' (" << size << ")" << endl;
 			return font;
 		} else {
 			ofLogError("ofxAssets") << "Requested font asset'" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
@@ -102,10 +102,10 @@ namespace ofxAssets {
 		//if we're still debugging in the build location, copy in latest assets
 		auto checkDir = ofDirectory("../../../../../addons/" + addonName + "/data/assets/" + addonName);
 		if (checkDir.exists()) {
-			ofLogNotice("ofxAssets") << "Copying in addon files from " << checkDir.getOriginalDirectory();
+			ofLogVerbose("ofxAssets") << "Copying in addon files from " << checkDir.getOriginalDirectory();
 			checkDir.copyTo("assets/" + addonName, true, true);
 		} else {
-			ofLogNotice("ofxAssets") << "Cannot copy in addon assets since folder doesn't exist : " << checkDir.getOriginalDirectory();
+			ofLogWarning("ofxAssets") << "Cannot copy in addon assets since folder doesn't exist : " << checkDir.getOriginalDirectory();
 		}
 #endif
 
@@ -139,10 +139,10 @@ namespace ofxAssets {
 
 	//---------
 	void Register::loadAssets(string addon) {
-		ofLogNotice("ofxAssets") << "//--------------------";
-		ofLogNotice("ofxAssets") << "//ofxAssets::init";
-		ofLogNotice("ofxAssets") << "//--------------------";
-		ofLogNotice("ofxAssets") << "//";
+		ofLogVerbose("ofxAssets") << "//--------------------";
+		ofLogVerbose("ofxAssets") << "//ofxAssets::init";
+		ofLogVerbose("ofxAssets") << "//--------------------";
+		ofLogVerbose("ofxAssets") << "//";
 		
 		string filename, name, extension, withoutExtension, folder;
 		ofDirectory files;
@@ -153,7 +153,7 @@ namespace ofxAssets {
 		}
 
 		if (!ofDirectory::doesDirectoryExist(dataPath)) {
-			ofLogNotice("ofxAssets") << "Assets data path cannot be found. Be sure to have a ./assets subfolder inside your app's data/ folder if you want to use ofxAssets";
+			ofLogWarning("ofxAssets") << "Assets data path cannot be found. Be sure to have a ./assets subfolder inside your app's data/ folder if you want to use ofxAssets";
 			return;
 		}
 		
@@ -166,8 +166,8 @@ namespace ofxAssets {
 		this->traverseDirectoryShaders(ofToDataPath(dataPath + "/shaders/", true), outputNamespace);
 		this->traverseDirectoryFonts(ofToDataPath(dataPath + "/fonts/", true), outputNamespace);
 		
-		ofLogNotice("ofxAssets") << "//";
-		ofLogNotice("ofxAssets") << "//--------------------";
+		ofLogVerbose("ofxAssets") << "//";
+		ofLogVerbose("ofxAssets") << "//--------------------";
 		
 		ofNotifyEvent(evtLoad, *this, this);
 		
@@ -208,7 +208,7 @@ namespace ofxAssets {
 				this->images.insert(pair<string, ofImage>(outputName, ofImage()));
 				this->images[outputName].loadImage(filename);
 
-				ofLogNotice("ofxAssets") << "Loaded image asset '" << outputName << "'" << endl;
+				ofLogVerbose("ofxAssets") << "Loaded image asset '" << outputName << "'" << endl;
 			}
 		}
 	}
@@ -260,7 +260,7 @@ namespace ofxAssets {
 #endif
 				shader.linkProgram();
 
-				ofLogNotice("ofxAssets") << "Loaded shader asset '" << outputName << "'" << endl;
+				ofLogVerbose("ofxAssets") << "Loaded shader asset '" << outputName << "'" << endl;
 			}
 		}
 	}
@@ -298,7 +298,7 @@ namespace ofxAssets {
 				//register the font for lazy loading later
 				this->fontFilenames.insert(pair<string, string>(outputName, filename));
 
-				ofLogNotice("ofxAssets") << "Found font asset '" << outputName << "'" << endl;
+				ofLogVerbose("ofxAssets") << "Found font asset '" << outputName << "'" << endl;
 			}
 		}
 	}
