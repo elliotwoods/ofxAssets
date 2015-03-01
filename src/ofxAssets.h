@@ -36,6 +36,7 @@ namespace ofxAssets {
 		ofEvent<Register> evtLoad;
 
 	protected:
+		void init();
 		void setup(ofEventArgs &);
 		void loadAssets(string addon = "");
 		
