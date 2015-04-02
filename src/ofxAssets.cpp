@@ -139,8 +139,17 @@ namespace ofxAssets {
 
 	//---------
 	void Register::loadAssets(string addon) {
+		if(!addon.empty()) {
+			if(!this->initialised) {
+				this->loadAssets();
+			}
+		}
+		
 		ofLogVerbose("ofxAssets") << "//--------------------";
 		ofLogVerbose("ofxAssets") << "//ofxAssets::init";
+		if(!addon.empty()) {
+			ofLogVerbose("ofxAssets") << "// addon : " << addon;
+		}
 		ofLogVerbose("ofxAssets") << "//--------------------";
 		ofLogVerbose("ofxAssets") << "//";
 		
