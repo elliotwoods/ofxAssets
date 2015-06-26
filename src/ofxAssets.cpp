@@ -7,8 +7,16 @@
 namespace ofxAssets {
 #pragma mark public
 	//---------
-	Register AssetRegister = Register();
+	Register * Register::singleton = 0;
 	
+	//---------
+	Register & Register::X() {
+		if (!Register::singleton) {
+			Register::singleton = new Register();
+		}
+		return *singleton;
+	}
+
 	//---------
 	Register::Register() {
 		this->initialised = false;

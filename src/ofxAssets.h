@@ -16,6 +16,10 @@
 namespace ofxAssets {
 	class Register {
 	public:
+		static Register & X(); // get the singleton
+	protected:
+		static Register * singleton;
+	public:
 		Register();
 		void refresh();
 		
@@ -58,17 +62,19 @@ namespace ofxAssets {
 		bool initialised;
 	};
 
-	extern Register AssetRegister;
-	
+	Register & AssetRegister() { // for (close to) backwards compatability
+		return Register::X();
+	}
+
 	static ofShader & shader(string name) {
-		return AssetRegister.getShader(name);
+		return Register::X().getShader(name);
 	}
 	
 	static ofImage & image(string name) {
-		return AssetRegister.getImage(name);
+		return Register::X().getImage(name);
 	}
 	
 	static ofTrueTypeFont & font(string name, int size) {
-		return AssetRegister.getFont(name, size);
+		return Register::X().getFont(name, size);
 	}
 }
