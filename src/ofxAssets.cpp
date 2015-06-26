@@ -74,7 +74,7 @@ namespace ofxAssets {
 		} else if (this->fontFilenames.find(name) != this->fontFilenames.end()) {
 			this->fonts.insert(pair<pair<string,int>,ofTrueTypeFont>(id, ofTrueTypeFont()));
 			ofTrueTypeFont & font = this->fonts[id];
-			font.loadFont(this->fontFilenames[name], size, true, true, true);
+			font.load(this->fontFilenames[name], size, true, true, true);
 			ofLogVerbose("ofxAssets") << "Loaded font asset '" << name << "' (" << size << ")" << endl;
 			return font;
 		} else {
@@ -189,7 +189,7 @@ namespace ofxAssets {
 		if (ofDirectory::doesDirectoryExist(dataPath)) {
 			ofDirectory files;
 			files.listDir(dataPath);
-			for (int i = 0; i<files.size(); i++) {
+			for (unsigned int i = 0; i<files.size(); i++) {
 				const auto filename = files.getPath(i);
 				auto outputName = ofFilePath::getBaseName(filename); 
 				
@@ -214,7 +214,7 @@ namespace ofxAssets {
 					continue;
 				}
 				this->images.insert(pair<string, ofImage>(outputName, ofImage()));
-				this->images[outputName].loadImage(filename);
+				this->images[outputName].load(filename);
 
 				ofLogVerbose("ofxAssets") << "Loaded image asset '" << outputName << "'" << endl;
 			}
@@ -227,7 +227,7 @@ namespace ofxAssets {
 		if (ofDirectory::doesDirectoryExist(dataPath)) {
 			ofDirectory files;
 			files.listDir(dataPath);
-			for (int i = 0; i<files.size(); i++) {
+			for (unsigned int i = 0; i<files.size(); i++) {
 				const auto filename = files.getPath(i);
 				auto outputName = ofFilePath::getBaseName(filename);
 
@@ -278,7 +278,7 @@ namespace ofxAssets {
 		if (ofDirectory::doesDirectoryExist(dataPath)) {
 			ofDirectory files;
 			files.listDir(dataPath);
-			for (int i = 0; i<files.size(); i++) {
+			for (unsigned int i = 0; i<files.size(); i++) {
 				const auto filename = files.getPath(i);
 				auto outputName = ofFilePath::getBaseName(filename);
 
@@ -309,5 +309,10 @@ namespace ofxAssets {
 				ofLogVerbose("ofxAssets") << "Found font asset '" << outputName << "'" << endl;
 			}
 		}
+	}
+
+	//----------
+	Register & AssetRegister() { // backwards compatability
+		return Register::X();
 	}
 }

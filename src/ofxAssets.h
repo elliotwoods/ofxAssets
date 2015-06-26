@@ -62,9 +62,7 @@ namespace ofxAssets {
 		bool initialised;
 	};
 
-	Register & AssetRegister() { // for (close to) backwards compatability
-		return Register::X();
-	}
+	Register & AssetRegister();// for (close to) backwards compatability
 
 	static ofShader & shader(string name) {
 		return Register::X().getShader(name);
