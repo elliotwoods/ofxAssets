@@ -12,6 +12,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <regex>
 
 namespace ofxAssets {
 	class Register {
@@ -22,7 +23,8 @@ namespace ofxAssets {
 	public:
 		Register();
 		void refresh();
-		
+		void clear();
+
 		ofImage & getImage(string name);
 		ofShader & getShader(string name);
 		ofTrueTypeFont & getFont(string name, int size);
@@ -40,15 +42,16 @@ namespace ofxAssets {
 		ofEvent<Register> evtLoad;
 
 	protected:
-		void init();
-		void setup(ofEventArgs &);
-		void loadAssets(string addon = "");
+		bool isInitialised() const;
+		void load(); // make sure everything is loaded
+		void unload(); // unload everything
 		
-		void traverseDirectoryImages(string dataPath, vector<string> outputNamespace);
-		void traverseDirectoryShaders(string dataPath, vector<string> outputNamespace);
-		void traverseDirectoryFonts(string dataPath, vector<string> outputNamespace);
+		void traverseDirectoryImages(boost::filesystem::path path, vector<string> targetNamespace);
+		void traverseDirectoryShaders(boost::filesystem::path path, vector<string> targetNamespace);
+		void traverseDirectoryFonts(boost::filesystem::path path, vector<string> targetNamespace);
 
-		set<string> addonList;
+		set<string> addonsRegistered;
+		set<string> addonsLoaded;
 
 		map<string, ofImage> images;
 		map<string, ofShader> shaders;
@@ -58,7 +61,7 @@ namespace ofxAssets {
 		ofImage blankImage;
 		ofShader blankShader;
 		ofTrueTypeFont blankFont;
-		
+
 		bool initialised;
 	};
 
