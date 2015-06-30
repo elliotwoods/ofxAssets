@@ -122,7 +122,7 @@ namespace ofxAssets {
 				return false;
 			}
 			// Create the destination directory
-			if (!fs::create_directory(destination))
+			if (!fs::create_directories(destination))
 			{
 				std::cerr << "Unable to create destination directory"
 					<< destination.string() << '\n'
@@ -231,7 +231,7 @@ namespace ofxAssets {
 		auto dataPath = fs::path(ofToDataPath("")) / "assets";
 
 		for (const auto addon : this->addonsRegistered) {
-			cout << "ofxAssets : loading addon '" << addon << "'" << endl;
+			ofLogVerbose("ofxAssets") << "ofxAssets : loading addon '" << addon << "'";
 
 			if (this->addonsLoaded.find(addon) != this->addonsLoaded.end()) {
 				//we've already loaded this addon. call refresh() if you want to load it again
@@ -260,6 +260,8 @@ namespace ofxAssets {
 		
 		this->initialised = true;
 		ofNotifyEvent(evtLoad, *this, this);
+
+		ofLogVerbose("ofxAssets") << "";
 	}
 
 	//----------
