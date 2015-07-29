@@ -6,19 +6,25 @@
 
 namespace fs = std::filesystem;
 
-namespace ofxAssets {
-#pragma mark public
+//define statics
+#ifdef HAS_OFXSINGLETON
 	//---------
-	Register * Register::singleton = 0;
-	
+	ofxAssets::Register::SingletonStore ofxAssets::Register::singletonStore;
+#else
 	//---------
-	Register & Register::X() {
+	ofxAssets::Register * ofxAssets::Register::singleton = 0;
+
+	//---------
+	ofxAssets::Register & ofxAssets::Register::X() {
 		if (!Register::singleton) {
 			Register::singleton = new Register();
 		}
-		return * Register::singleton;
+		return *Register::singleton;
 	}
+#endif
 
+namespace ofxAssets {
+#pragma mark public
 	//---------
 	Register::Register() {
 		this->clear();

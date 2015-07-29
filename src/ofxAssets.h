@@ -3,6 +3,10 @@
 //
 #pragma once
 
+#ifdef HAS_OFXSINGLETON
+#include "ofxSingleton.h"
+#endif
+
 #include "ofShader.h"
 #include "ofImage.h"
 #include "ofTrueTypeFont.h"
@@ -15,11 +19,19 @@
 #include <regex>
 
 namespace ofxAssets {
+
+//setup singleton in class header
+#ifdef HAS_OFXSINGLETON
+	class Register : public ofxSingleton::Singleton<Register> {
+#else
 	class Register {
 	public:
 		static Register & X(); // get the singleton
 	protected:
 		static Register * singleton;
+#endif
+
+
 	public:
 		Register();
 		void refresh();
