@@ -41,6 +41,10 @@ namespace ofxAssets {
 		ofShader & getShader(string name);
 		ofTrueTypeFont & getFont(string name, int size);
 		
+		shared_ptr<ofImage> getImagePointer(string name);
+		shared_ptr<ofShader> getShaderPointer(string name);
+		shared_ptr<ofTrueTypeFont> getFontPointer(string name, int size);
+
 		bool hasImage(string name);
 		bool hasShader(string name);
 		bool hasFont(string name);
@@ -65,14 +69,14 @@ namespace ofxAssets {
 		set<string> addonsRegistered;
 		set<string> addonsLoaded;
 
-		map<string, ofImage> images;
-		map<string, ofShader> shaders;
+		map<string, shared_ptr<ofImage>> images;
+		map<string, shared_ptr<ofShader>> shaders;
 		map<string, string> fontFilenames;
-		map<pair<string,int>, ofTrueTypeFont> fonts;
+		map<pair<string,int>, shared_ptr<ofTrueTypeFont>> fonts;
 		
-		ofImage blankImage;
-		ofShader blankShader;
-		ofTrueTypeFont blankFont;
+		shared_ptr<ofImage> blankImage;
+		shared_ptr<ofShader> blankShader;
+		shared_ptr<ofTrueTypeFont> blankFont;
 
 		bool initialised;
 	};

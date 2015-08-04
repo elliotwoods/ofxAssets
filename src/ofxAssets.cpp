@@ -9,7 +9,8 @@ namespace fs = std::filesystem;
 //define statics
 #ifdef HAS_OFXSINGLETON
 	//---------
-	ofxAssets::Register::SingletonStore ofxAssets::Register::singletonStore;
+	OFXSINGLETON_DEFINE(ofxAssets::Register);
+
 #else
 	//---------
 	ofxAssets::Register * ofxAssets::Register::singleton = 0;
@@ -27,6 +28,10 @@ namespace ofxAssets {
 #pragma mark public
 	//---------
 	Register::Register() {
+		this->blankFont = make_shared<ofTrueTypeFont>();
+		this->blankImage = make_shared<ofImage>();
+		this->blankShader = make_shared<ofShader>();
+
 		this->clear();
 	}
 
@@ -42,9 +47,24 @@ namespace ofxAssets {
 		this->addonsRegistered.clear();
 		this->addonsRegistered.insert(""); // add the root namespace
 	}
-	
+
 	//---------
 	ofImage & Register::getImage(string name) {
+		return * this->getImagePointer(name);
+	}
+
+	//---------
+	ofShader & Register::getShader(string name) {
+		return * this->getShaderPointer(name);
+	}
+
+	//---------
+	ofTrueTypeFont & Register::getFont(string name, int size) {
+		return * this->getFontPointer(name, size);
+	}
+	
+	//---------
+	shared_ptr<ofImage> Register::getImagePointer(string name) {
 		this->load();
 
 		auto findImage = this->images.find(name);
@@ -52,12 +72,12 @@ namespace ofxAssets {
 			return findImage->second;
 		} else {
 			ofLogError("ofxAssets") << "Requested image asset'" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
-			return  this->blankImage;
+			return this->blankImage;
 		}
 	}
 
 	//---------
-	ofShader & Register::getShader(string name) {
+	shared_ptr<ofShader> Register::getShaderPointer(string name) {
 		this->load();
 
 		auto findShader = this->shaders.find(name);
@@ -65,25 +85,28 @@ namespace ofxAssets {
 			return findShader->second;
 		} else {
 			ofLogError("ofxAssets") << "Requested shader asset'" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
-			return  this->blankShader;
+			return this->blankShader;
 		}
 	}
 
 	//---------
-	ofTrueTypeFont & Register::getFont(string name, int size) {
+	shared_ptr<ofTrueTypeFont> Register::getFontPointer(string name, int size) {
 		this->load();
 		
 		pair<string, int> id = pair<string, int>(name, size);
 		auto findFont = this->fonts.find(id);
 		if (findFont != this->fonts.end()) {
+			//this font+size exists
 			return findFont->second;
 		} else if (this->fontFilenames.find(name) != this->fontFilenames.end()) {
-			this->fonts.insert(pair<pair<string,int>,ofTrueTypeFont>(id, ofTrueTypeFont()));
-			ofTrueTypeFont & font = this->fonts[id];
-			font.load(this->fontFilenames[name], size, true, true, true);
+			//font fontexists, but we need to load this size
+			auto font = make_shared<ofTrueTypeFont>();
+			this->fonts.insert(pair<pair<string,int>,shared_ptr<ofTrueTypeFont>>(id, font));
+			font->load(this->fontFilenames[name], size, true, true, true);
 			ofLogVerbose("ofxAssets") << "Loaded font asset '" << name << "' (" << size << ")" << endl;
 			return font;
 		} else {
+			//font doesn't exist
 			ofLogError("ofxAssets") << "Requested font asset'" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
 			return this->blankFont;
 		}
@@ -311,8 +334,9 @@ namespace ofxAssets {
 	void Register::traverseDirectoryImages(fs::path path, vector<string> targetNamespace) {
 		traverseDirectory(path, regex("^.*\\.(jpg|jpeg|png|gif|tif|tiff|gif)$"), targetNamespace, [this](const fs::path & path, string assetAddress) {
 			if (!this->hasImage(assetAddress)) {
-				this->images.insert(pair<string, ofImage>(assetAddress, ofImage()));
-				this->images[assetAddress].load(path.string());
+				auto image = make_shared<ofImage>();
+				this->images.insert(pair<string, shared_ptr<ofImage>>(assetAddress, image));
+				image->load(path.string());
 				ofLogVerbose("ofxAssets") << "Loaded image asset '" << assetAddress << "'" << endl;
 			}
 		});
@@ -324,8 +348,8 @@ namespace ofxAssets {
 		traverseDirectory(path, regex("^.*\\.(vert|frag|geom)$"), targetNamespace, [this](const fs::path & path, string assetAddress) {
 			if (!this->hasShader(assetAddress)) {
 				//insert the shader
-				this->shaders.insert(pair<string, ofShader>(assetAddress, ofShader()));
-				auto & shader = this->shaders[assetAddress];
+				auto shader = make_shared<ofShader>();
+				this->shaders.insert(pair<string, shared_ptr<ofShader>>(assetAddress, shader));
 
 				//load any available shader stages
 				const auto withoutExtension = path.parent_path() / path.stem();
@@ -336,17 +360,17 @@ namespace ofxAssets {
 				vertPath += ".vert";
 				geomPath += ".geom";
 				if (fs::exists(fragPath)) {
-					shader.setupShaderFromFile(GL_FRAGMENT_SHADER, fragPath.string());
+					shader->setupShaderFromFile(GL_FRAGMENT_SHADER, fragPath.string());
 				}
 				if (fs::exists(fragPath)) {
-					shader.setupShaderFromFile(GL_VERTEX_SHADER, vertPath.string());
+					shader->setupShaderFromFile(GL_VERTEX_SHADER, vertPath.string());
 				}
 #ifndef TARGET_IPHONE_SIMULATOR // warning - if we have a geom by itself on the iPhone simulator then this may cause an issue
 				if (fs::exists(fragPath)) {
-					shader.setupShaderFromFile(GL_GEOMETRY_SHADER, geomPath.string());
+					shader->setupShaderFromFile(GL_GEOMETRY_SHADER, geomPath.string());
 				}
 #endif
-				shader.linkProgram();
+				shader->linkProgram();
 
 				ofLogVerbose("ofxAssets") << "Loaded shader asset '" << assetAddress << "'" << endl;
 			}
