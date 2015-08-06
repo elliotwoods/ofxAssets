@@ -9,7 +9,7 @@ namespace fs = std::filesystem;
 //define statics
 #ifdef HAS_OFXSINGLETON
 	//---------
-	ofxAssets::Register::SingletonStore ofxAssets::Register::singletonStore;
+	OFXSINGLETON_DEFINE(ofxAssets::Register);
 #else
 	//---------
 	ofxAssets::Register * ofxAssets::Register::singleton = 0;
