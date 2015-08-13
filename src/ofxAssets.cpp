@@ -101,7 +101,7 @@ namespace ofxAssets {
 			//font fontexists, but we need to load this size
 			auto font = make_shared<ofTrueTypeFont>();
 			this->fonts.insert(pair<pair<string,int>,shared_ptr<ofTrueTypeFont>>(id, font));
-			font->load(this->fontFilenames[name], size, true, true, true);
+			font->load(this->fontFilenames[name], size, true, false, true);
 			ofLogVerbose("ofxAssets") << "Loaded font asset '" << name << "' (" << size << ")" << endl;
 			return font;
 		} else {
