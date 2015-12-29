@@ -10,6 +10,8 @@
 #include "ofShader.h"
 #include "ofImage.h"
 #include "ofTrueTypeFont.h"
+#include "ofSoundPlayer.h"
+#include "ofSoundBuffer.h"
 
 #include "ofEvents.h"
 
@@ -33,6 +35,11 @@ namespace ofxAssets {
 
 
 	public:
+		struct Sound {
+			ofSoundPlayer player;
+			ofSoundBuffer buffer; /// Note : you need ofxAudioDecoder for this to be filled. And define HAS_OFXAUDIODECODER in your project preprocessor flags
+		};
+		
 		Register();
 		void refresh();
 		void clear();
@@ -40,14 +47,17 @@ namespace ofxAssets {
 		ofImage & getImage(string name);
 		ofShader & getShader(string name);
 		ofTrueTypeFont & getFont(string name, int size);
+		Sound & getSound(string name);
 		
 		shared_ptr<ofImage> getImagePointer(string name);
 		shared_ptr<ofShader> getShaderPointer(string name);
 		shared_ptr<ofTrueTypeFont> getFontPointer(string name, int size);
+		shared_ptr<Sound> getSoundPointer(string name);
 
-		bool hasImage(string name);
-		bool hasShader(string name);
-		bool hasFont(string name);
+		bool hasImage(string name) const;
+		bool hasShader(string name) const;
+		bool hasFont(string name) const;
+		bool hasSound(string name) const;
 
 		/// Load assets for an addon, e.g.:
 		///		data/ofxMultiTrack/images/0.png
@@ -65,6 +75,7 @@ namespace ofxAssets {
 		void traverseDirectoryImages(boost::filesystem::path path, vector<string> targetNamespace);
 		void traverseDirectoryShaders(boost::filesystem::path path, vector<string> targetNamespace);
 		void traverseDirectoryFonts(boost::filesystem::path path, vector<string> targetNamespace);
+		void traverseDirectorySounds(boost::filesystem::path path, vector<string> targetNamespace);
 
 		unordered_set<string> addonsRegistered;
 		unordered_set<string> addonsLoaded;
@@ -73,10 +84,12 @@ namespace ofxAssets {
 		map<string, shared_ptr<ofShader>> shaders;
 		map<string, string> fontFilenames;
 		map<pair<string,int>, shared_ptr<ofTrueTypeFont>> fonts;
+		map<string, shared_ptr<Sound>> sounds;
 		
 		shared_ptr<ofImage> blankImage;
 		shared_ptr<ofShader> blankShader;
 		shared_ptr<ofTrueTypeFont> blankFont;
+		shared_ptr<Sound> blankSound;
 
 		bool initialised;
 	};
@@ -93,5 +106,9 @@ namespace ofxAssets {
 	
 	static ofTrueTypeFont & font(string name, int size) {
 		return Register::X().getFont(name, size);
+	}
+		
+	static Register::Sound & sound(string name) {
+		return Register::X().getSound(name);
 	}
 }

@@ -4,6 +4,10 @@
 
 #include "ofxAssets.h"
 
+#ifdef HAS_OFXAUDIODECODER
+#include "ofxAudioDecoder.h"
+#endif
+
 namespace fs = std::filesystem;
 
 //define statics
@@ -30,7 +34,12 @@ namespace ofxAssets {
 		this->blankFont = make_shared<ofTrueTypeFont>();
 		this->blankImage = make_shared<ofImage>();
 		this->blankShader = make_shared<ofShader>();
-
+		this->blankSound = make_shared<Sound>();
+		
+		this->blankImage->allocate(1, 1, OF_IMAGE_GRAYSCALE);
+		this->blankImage->getPixels()[0] = 255;
+		this->blankImage->update();
+		
 		this->clear();
 	}
 
@@ -63,6 +72,11 @@ namespace ofxAssets {
 	}
 	
 	//---------
+	Register::Sound & Register::getSound(string name) {
+		return * this->getSoundPointer(name);
+	}
+	
+	//---------
 	shared_ptr<ofImage> Register::getImagePointer(string name) {
 		this->load();
 
@@ -70,7 +84,7 @@ namespace ofxAssets {
 		if (findImage != this->images.end()) {
 			return findImage->second;
 		} else {
-			ofLogError("ofxAssets") << "Requested image asset'" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
+			ofLogError("ofxAssets") << "Requested image asset '" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
 			return this->blankImage;
 		}
 	}
@@ -83,7 +97,7 @@ namespace ofxAssets {
 		if (findShader != this->shaders.end()) {
 			return findShader->second;
 		} else {
-			ofLogError("ofxAssets") << "Requested shader asset'" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
+			ofLogError("ofxAssets") << "Requested shader asset '" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
 			return this->blankShader;
 		}
 	}
@@ -106,24 +120,42 @@ namespace ofxAssets {
 			return font;
 		} else {
 			//font doesn't exist
-			ofLogError("ofxAssets") << "Requested font asset'" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
+			ofLogError("ofxAssets") << "Requested font asset '" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
 			return this->blankFont;
+		}
+	}
+	
+	//---------
+	shared_ptr<Register::Sound> Register::getSoundPointer(string name) {
+		this->load();
+		
+		auto findSound = this->sounds.find(name);
+		if (findSound != this->sounds.end()) {
+			return findSound->second;
+		} else {
+			ofLogError("ofxAssets") << "Requested sound asset '" << name << "' doesn't exist, have you got all the files in the right place in your data/assets/ folder?";
+			return this->blankSound;
 		}
 	}
 
 	//---------
-	bool Register::hasImage(string name) {
+	bool Register::hasImage(string name) const {
 		return this->images.find(name) != this->images.end();
 	}
 
 	//---------
-	bool Register::hasShader(string name) {
+	bool Register::hasShader(string name) const {
 		return this->shaders.find(name) != this->shaders.end();
 	}
 
 	//---------
-	bool Register::hasFont(string name) {
+	bool Register::hasFont(string name) const {
 		return this->fontFilenames.find(name) != this->fontFilenames.end();
+	}
+	
+	//---------
+	bool Register::hasSound(string name) const {
+		return this->sounds.find(name) != this->sounds.end();
 	}
 
 	//---------
@@ -282,6 +314,7 @@ namespace ofxAssets {
 			this->traverseDirectoryImages(dataPath / "images", outputNamespace);
 			this->traverseDirectoryShaders(dataPath / "shaders", outputNamespace);
 			this->traverseDirectoryFonts(dataPath / "fonts", outputNamespace);
+			this->traverseDirectorySounds(dataPath / "sounds", outputNamespace);
 
 			this->addonsLoaded.insert(addon);
 		}
@@ -298,6 +331,7 @@ namespace ofxAssets {
 		this->shaders.clear();
 		this->fontFilenames.clear();
 		this->fonts.clear();
+		this->sounds.clear();
 
 		this->initialised = false;
 		this->addonsLoaded.clear();
@@ -364,7 +398,8 @@ namespace ofxAssets {
 				if (fs::exists(fragPath)) {
 					shader->setupShaderFromFile(GL_VERTEX_SHADER, vertPath.string());
 				}
-#ifndef TARGET_IPHONE_SIMULATOR // warning - if we have a geom by itself on the iPhone simulator then this may cause an issue
+#ifndef TARGET_IPHONE_SIMULATOR
+				// warning - if we have a geom by itself on the iPhone simulator then this may cause an issue
 				if (fs::exists(fragPath)) {
 					shader->setupShaderFromFile(GL_GEOMETRY_SHADER, geomPath.string());
 				}
@@ -382,6 +417,21 @@ namespace ofxAssets {
 			if (!this->hasFont(assetAddress)) {
 				this->fontFilenames.insert(pair<string, string>(assetAddress, path.string()));
 				ofLogVerbose("ofxAssets") << "Found font asset '" << assetAddress << "'" << endl;
+			}
+		});
+	}
+	
+	//----------
+	void Register::traverseDirectorySounds(fs::path path, vector<string> targetNamespace) {
+		traverseDirectory(path, regex("^.*\\.(wav|aif|aiff|mp3)$"), targetNamespace, [this](const fs::path & path, string assetAddress) {
+			if (!this->hasSound(assetAddress)) {
+				auto sound = make_shared<Register::Sound>();
+				this->sounds.insert(pair<string, shared_ptr<Sound>>(assetAddress, sound));
+				sound->player.load(path.string());
+#ifdef HAS_OFXAUDIODECODER
+				ofxAudioDecoder::load(sound->buffer, path.string());
+#endif
+				ofLogVerbose("ofxAssets") << "Loaded sound asset '" << assetAddress << "'" << endl;
 			}
 		});
 	}
