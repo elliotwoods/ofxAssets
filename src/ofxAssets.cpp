@@ -395,12 +395,12 @@ namespace ofxAssets {
 				if (fs::exists(fragPath)) {
 					shader->setupShaderFromFile(GL_FRAGMENT_SHADER, fragPath.string());
 				}
-				if (fs::exists(fragPath)) {
+				if (fs::exists(vertPath)) {
 					shader->setupShaderFromFile(GL_VERTEX_SHADER, vertPath.string());
 				}
 #ifndef TARGET_IPHONE_SIMULATOR
 				// warning - if we have a geom by itself on the iPhone simulator then this may cause an issue
-				if (fs::exists(fragPath)) {
+				if (fs::exists(geomPath)) {
 					shader->setupShaderFromFile(GL_GEOMETRY_SHADER, geomPath.string());
 				}
 #endif
