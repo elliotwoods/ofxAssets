@@ -65,7 +65,13 @@ namespace ofxAssets {
 		///		image("ofxMultiTrack::0")
 		void addAddon(string addonName);
 		
-		ofEvent<Register> evtLoad;
+		vector<string> getImageNames() const;
+		vector<string> getShaderNames() const;
+		vector<string> getSoundNames() const;
+		vector<string> getFontFilenames() const;
+		vector<int> getFontSizes(string fontName) const;
+		
+		ofEvent<void> evtLoad;
 
 	protected:
 		bool isInitialised() const;
@@ -96,19 +102,19 @@ namespace ofxAssets {
 
 	Register & AssetRegister();// for (close to) backwards compatability
 
-	static ofShader & shader(string name) {
+	static inline ofShader & shader(string name) {
 		return Register::X().getShader(name);
 	}
 	
-	static ofImage & image(string name) {
+	static inline ofImage & image(string name) {
 		return Register::X().getImage(name);
 	}
 	
-	static ofTrueTypeFont & font(string name, int size) {
+	static inline ofTrueTypeFont & font(string name, int size) {
 		return Register::X().getFont(name, size);
 	}
 		
-	static Register::Sound & sound(string name) {
+	static inline Register::Sound & sound(string name) {
 		return Register::X().getSound(name);
 	}
 }

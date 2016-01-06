@@ -259,6 +259,53 @@ namespace ofxAssets {
 #endif
 	}
 
+	//---------
+	vector<string> Register::getImageNames() const {
+		vector<string> result;
+		for(const auto & image : this->images) {
+			result.push_back(image.first);
+		}
+		return result;
+	}
+	
+	//---------
+	vector<string> Register::getShaderNames() const {
+		vector<string> result;
+		for(const auto & shader : this->shaders) {
+			result.push_back(shader.first);
+		}
+		return result;
+	}
+	
+	//---------
+	vector<string> Register::getSoundNames() const {
+		vector<string> result;
+		for(const auto & sound : this->sounds) {
+			result.push_back(sound.first);
+		}
+		return result;
+	}
+	
+	//---------
+	vector<string> Register::getFontFilenames() const {
+		vector<string> result;
+		for(const auto & fontFilename : this->fontFilenames) {
+			result.push_back(fontFilename.first);
+		}
+		return result;
+	}
+	
+	//---------
+	vector<int> Register::getFontSizes(string fontName) const {
+		vector<int> result;
+		for(const auto & font : this->fonts) {
+			if(font.first.first == fontName) {
+				result.push_back(font.first.second);
+			}
+		}
+		return result;
+	}
+	
 #pragma mark protected
 	//---------
 	void transformName(string &name, vector<string> outputNamespace) {
@@ -320,7 +367,7 @@ namespace ofxAssets {
 		}
 		
 		this->initialised = true;
-		ofNotifyEvent(evtLoad, *this, this);
+		ofNotifyEvent(evtLoad, this);
 
 		ofLogVerbose("ofxAssets") << "";
 	}
