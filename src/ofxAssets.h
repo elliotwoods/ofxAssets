@@ -37,7 +37,9 @@ namespace ofxAssets {
 	public:
 		struct Sound {
 			ofSoundPlayer player;
-			ofSoundBuffer buffer; /// Note : you need ofxAudioDecoder for this to be filled. And define HAS_OFXAUDIODECODER in your project preprocessor flags
+#ifdef HAS_OFXAUDIODECODER
+			ofSoundBuffer buffer; /// Note : you need ofxAudioDecoder in your project for this to be filled. And define HAS_OFXAUDIODECODER in your project preprocessor flags
+#endif
 		};
 		
 		Register();
