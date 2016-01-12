@@ -433,27 +433,16 @@ namespace ofxAssets {
 
 				//load any available shader stages
 				const auto withoutExtension = path.parent_path() / path.stem();
-				auto fragPath = withoutExtension;
-				auto vertPath = withoutExtension;
-				auto geomPath = withoutExtension;
-				fragPath += ".frag";
-				vertPath += ".vert";
-				geomPath += ".geom";
-				if (fs::exists(fragPath)) {
-					shader->setupShaderFromFile(GL_FRAGMENT_SHADER, fragPath.string());
-				}
-				if (fs::exists(vertPath)) {
-					shader->setupShaderFromFile(GL_VERTEX_SHADER, vertPath.string());
-				}
-#ifndef TARGET_IPHONE_SIMULATOR
-				// warning - if we have a geom by itself on the iPhone simulator then this may cause an issue
-				if (fs::exists(geomPath)) {
-					shader->setupShaderFromFile(GL_GEOMETRY_SHADER, geomPath.string());
-				}
-#endif
-				shader->linkProgram();
+				const auto absolutePath = fs::absolute(withoutExtension);
 
-				ofLogVerbose("ofxAssets") << "Loaded shader asset '" << assetAddress << "'" << endl;
+				auto success = shader->load(absolutePath.string());
+
+				if (success) {
+					ofLogVerbose("ofxAssets") << "Loaded shader asset '" << assetAddress << "'" << endl;
+				}
+				else {
+					ofLogError("ofxAssets") << "Failed to load shader asset '" << assetAddress << "'" << endl;
+				}
 			}
 		});
 	}
