@@ -33,7 +33,7 @@ namespace ofxAssets {
 			auto inserted = this->sizes.emplace(size, ofTrueTypeFont());
 			
 			auto & font = inserted.first->second;
-			font.load(this->getFilename(), size);
+			font.load(this->getFilename(), size, true, false, true);
 			return font;
 		}
 	}

@@ -79,6 +79,7 @@ namespace ofxAssets {
 	shared_ptr<Type> Set<Type>::operator[](const string & name) const {
 		auto findAsset = this->find(name);
 		if(findAsset == this->end()) {
+			ofLogWarning("ofxAssets::Set") << "Cannot get asset [" << name << "] of type [" << typeid(Type).name() << "]";
 			return this->blank;
 		}
 		else {
