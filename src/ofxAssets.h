@@ -3,11 +3,7 @@
 //
 #pragma once
 
-
-
-#include "ofTrueTypeFont.h"
-
-#include "Register.h"
+#include "ofxAssets/Register.h"
 
 namespace ofxAssets {
 	Register & AssetRegister();

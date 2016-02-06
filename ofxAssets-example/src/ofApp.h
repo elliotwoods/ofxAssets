@@ -3,9 +3,7 @@
 #include "ofMain.h"
 #include "ofxAssets.h"
 
-using namespace ofxAssets;
-
-class testApp : public ofBaseApp{
+class ofApp : public ofBaseApp{
 	public:
 		void setup();
 		void update();

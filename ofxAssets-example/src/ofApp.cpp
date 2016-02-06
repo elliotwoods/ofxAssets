@@ -1,61 +1,70 @@
-#include "testApp.h"
+#include "ofApp.h"
+
+using namespace ofxAssets;
 
 //--------------------------------------------------------------
-void testApp::setup(){
+void ofApp::setup(){
+	AssetRegister().setDirectoryWatcherEnabled(true);
 }
 
 //--------------------------------------------------------------
-void testApp::update(){
+void ofApp::update(){
 
 }
 
 //--------------------------------------------------------------
-void testApp::draw(){
+void ofApp::draw(){
 	image("FreeUCK").draw(10,10);	
 	font("verdana", 30).drawString("Why didn't I think of this before?", 10, 600);
+
+	shader("invert").begin();
+	image("FreeUCK").draw(510, 10);
+	shader("invert").end();
 }
 
 //--------------------------------------------------------------
-void testApp::keyPressed(int key){
-
+void ofApp::keyPressed(int key){
+	if (key == OF_KEY_F5) {
+		AssetRegister().refresh();
+	}
 }
 
 //--------------------------------------------------------------
-void testApp::keyReleased(int key){
-
-}
-
-//--------------------------------------------------------------
-void testApp::mouseMoved(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void testApp::mouseDragged(int x, int y, int button){
+void ofApp::keyReleased(int key){
 
 }
 
 //--------------------------------------------------------------
-void testApp::mousePressed(int x, int y, int button){
+void ofApp::mouseMoved(int x, int y){
 
 }
 
 //--------------------------------------------------------------
-void testApp::mouseReleased(int x, int y, int button){
+void ofApp::mouseDragged(int x, int y, int button){
 
 }
 
 //--------------------------------------------------------------
-void testApp::windowResized(int w, int h){
+void ofApp::mousePressed(int x, int y, int button){
 
 }
 
 //--------------------------------------------------------------
-void testApp::gotMessage(ofMessage msg){
+void ofApp::mouseReleased(int x, int y, int button){
 
 }
 
 //--------------------------------------------------------------
-void testApp::dragEvent(ofDragInfo dragInfo){ 
+void ofApp::windowResized(int w, int h){
+
+}
+
+//--------------------------------------------------------------
+void ofApp::gotMessage(ofMessage msg){
+
+}
+
+//--------------------------------------------------------------
+void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
 }

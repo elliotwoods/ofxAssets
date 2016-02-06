@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxAssets\src\ofxAssets.cpp">
+      <Filter>addons\ofxAssets\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxAssets\src\ofxAssets\BaseAsset.cpp">
+      <Filter>addons\ofxAssets\src\ofxAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxAssets\src\ofxAssets\Font.cpp">
+      <Filter>addons\ofxAssets\src\ofxAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxAssets\src\ofxAssets\Image.cpp">
+      <Filter>addons\ofxAssets\src\ofxAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxAssets\src\ofxAssets\Register.cpp">
+      <Filter>addons\ofxAssets\src\ofxAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxAssets\src\ofxAssets\Set.cpp">
+      <Filter>addons\ofxAssets\src\ofxAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxAssets\src\ofxAssets\Shader.cpp">
+      <Filter>addons\ofxAssets\src\ofxAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxAssets\src\ofxAssets\Sound.cpp">
+      <Filter>addons\ofxAssets\src\ofxAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofApp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons">
+      <UniqueIdentifier>{71834F65-F3A9-211E-73B8-DC85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxAssets">
+      <UniqueIdentifier>{3468134A-B198-A46E-EBDE-53BA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxAssets\src">
+      <UniqueIdentifier>{48C8A81E-F2E9-BE60-EA2E-067D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxAssets\src\ofxAssets">
+      <UniqueIdentifier>{4CD190B6-DB97-CE81-B2D9-16C7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\addons\ofxAssets\src\ofxAssets\BaseAsset.h">
+      <Filter>addons\ofxAssets\src\ofxAssets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxAssets\src\ofxAssets\Font.h">
+      <Filter>addons\ofxAssets\src\ofxAssets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxAssets\src\ofxAssets\Image.h">
+      <Filter>addons\ofxAssets\src\ofxAssets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxAssets\src\ofxAssets\Register.h">
+      <Filter>addons\ofxAssets\src\ofxAssets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxAssets\src\ofxAssets\Set.h">
+      <Filter>addons\ofxAssets\src\ofxAssets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxAssets\src\ofxAssets\Shader.h">
+      <Filter>addons\ofxAssets\src\ofxAssets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxAssets\src\ofxAssets\Sound.h">
+      <Filter>addons\ofxAssets\src\ofxAssets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxAssets\src\ofxAssets.h">
+      <Filter>addons\ofxAssets\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofApp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+</Project>

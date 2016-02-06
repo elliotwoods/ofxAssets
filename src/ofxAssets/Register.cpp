@@ -1,4 +1,5 @@
 #include "Register.h"
+
 namespace fs = std::filesystem;
 
 //define statics
@@ -211,6 +212,33 @@ namespace ofxAssets {
 	}
 	
 	//---------
+	void Register::setDirectoryWatcherEnabled(bool directoryWatcherEnabled) {
+		if (directoryWatcherEnabled == this->getDirectoryWatcherEnabled()) {
+			return;
+		}
+
+		if (!directoryWatcherEnabled) {
+			this->directoryWatcher.reset();
+		}
+		else {
+			string watchDirectory = "E:\\";
+			this->directoryWatcher = make_shared<Poco::DirectoryWatcher>(watchDirectory);
+			this->directoryWatcher->itemModified += Poco::delegate(this, &Register::callbackFileModified);
+			this->directoryWatcher->itemAdded += Poco::delegate(this, &Register::callbackFileModified);
+		}
+	}
+
+	//---------
+	bool Register::getDirectoryWatcherEnabled() const {
+		if (this->directoryWatcher) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	//---------
 	vector<int> Register::getFontSizes(string name) {
 		this->checkLoaded();
 		return this->fonts[name]->getSizes();
@@ -286,5 +314,13 @@ namespace ofxAssets {
 		
 		this->initialised = false;
 		this->addonsLoaded.clear();
+	}
+
+	//----------
+	void Register::callbackFileModified(const Poco::DirectoryWatcher::DirectoryEvent & args) {
+		auto fileChanged = args.item.path();
+		for (auto asset : this->shaders) {
+			cout << fileChanged << " vs " << asset.second->getFilename() << endl;
+		}
 	}
 }

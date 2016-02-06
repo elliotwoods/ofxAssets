@@ -16,6 +16,9 @@
 #include <string>
 #include <regex>
 
+#include "Poco/DirectoryWatcher.h"
+#include "Poco/Delegate.h"
+
 namespace ofxAssets {
 	//setup singleton in class header
 #ifdef HAS_OFXSINGLETON
@@ -56,6 +59,9 @@ namespace ofxAssets {
 		///		image("ofxMultiTrack::0")
 		void addAddon(string addonName);
 		
+		void setDirectoryWatcherEnabled(bool);
+		bool getDirectoryWatcherEnabled() const;
+
 		ofEvent<void> evtLoad;
 		
 	protected:
@@ -74,5 +80,8 @@ namespace ofxAssets {
 		Set<Sound> sounds;
 		
 		bool initialised = false;
+
+		void callbackFileModified(const Poco::DirectoryWatcher::DirectoryEvent &);
+		shared_ptr<Poco::DirectoryWatcher> directoryWatcher;
 	};
 }
