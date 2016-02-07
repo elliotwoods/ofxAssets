@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <vector>
+#include <set>
 #include <regex>
 #include "ofFileUtils.h"
 
@@ -19,6 +19,7 @@ namespace ofxAssets {
 		const filesystem::path & getPath() const;
 
 		string getFilename() const;
+		virtual bool isAssociatedWith(const set<filesystem::path> &);
 	protected:
 		filesystem::path path;
 	};

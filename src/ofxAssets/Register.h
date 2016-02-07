@@ -33,6 +33,8 @@ namespace ofxAssets {
 			
 	public:
 		Register();
+		virtual ~Register();
+			
 		void refresh();
 		void clear();
 		
@@ -65,11 +67,28 @@ namespace ofxAssets {
 		ofEvent<void> evtLoad;
 		
 	protected:
+		template<typename T>
+		inline void applyToAllAssets(T function) {
+			for(auto asset : this->fonts) {
+				function(asset.second);
+			}
+			for(auto asset : this->images) {
+				function(asset.second);
+			}
+			for(auto asset : this->shaders) {
+				function(asset.second);
+			}
+			for(auto asset : this->sounds) {
+				function(asset.second);
+			}
+		}
+		
 		bool isInitialised() const;
-			
 		inline void checkLoaded();
 		void load(); // make sure everything is loaded
 		void unload(); // unload everything
+		
+		void update(ofEventArgs &);
 		
 		unordered_set<string> addonsRegistered;
 		unordered_set<string> addonsLoaded;
@@ -81,7 +100,16 @@ namespace ofxAssets {
 		
 		bool initialised = false;
 
+		
+		void rebuildDirectoryWatchers();
 		void callbackFileModified(const Poco::DirectoryWatcher::DirectoryEvent &);
-		shared_ptr<Poco::DirectoryWatcher> directoryWatcher;
+		void checkAssetsChanged();
+		struct {
+			map<filesystem::path, shared_ptr<Poco::DirectoryWatcher>> watchers;
+			bool enabled = false;
+			
+			set<filesystem::path> changedFiles;
+			mutex changedFilesMutex;
+		} directoryWatchers;
 	};
 }

@@ -15,4 +15,14 @@ namespace ofxAssets {
 	string BaseAsset::getFilename() const {
 		return this->getPath().string();
 	}
+	
+	//----------
+	bool BaseAsset::isAssociatedWith(const set<filesystem::path> & paths) {
+		for(const auto & path : paths) {
+			if(path == this->getFilename()) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

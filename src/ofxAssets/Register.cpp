@@ -23,7 +23,13 @@ namespace ofxAssets {
 #pragma mark public
 	//---------
 	Register::Register() {
+		ofAddListener(ofEvents().update, this, &Register::update);
 		this->clear();
+	}
+	
+	//---------
+	Register::~Register() {
+		ofRemoveListener(ofEvents().update, this, &Register::update);
 	}
 	
 	//---------
@@ -218,24 +224,19 @@ namespace ofxAssets {
 		}
 
 		if (!directoryWatcherEnabled) {
-			this->directoryWatcher.reset();
+			this->directoryWatchers.enabled = false;
+			this->directoryWatchers.watchers.clear();
 		}
 		else {
-			string watchDirectory = "E:\\";
-			this->directoryWatcher = make_shared<Poco::DirectoryWatcher>(watchDirectory);
-			this->directoryWatcher->itemModified += Poco::delegate(this, &Register::callbackFileModified);
-			this->directoryWatcher->itemAdded += Poco::delegate(this, &Register::callbackFileModified);
+			//flag this to happen on next update (we use flags because we rebuild on add events)
+			this->directoryWatchers.enabled = true;
+			this->rebuildDirectoryWatchers();
 		}
 	}
 
 	//---------
 	bool Register::getDirectoryWatcherEnabled() const {
-		if (this->directoryWatcher) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return this->directoryWatchers.enabled;
 	}
 
 	//---------
@@ -269,7 +270,7 @@ namespace ofxAssets {
 	//---------
 	void Register::load() {
 		//we call this function to ensure that files are loaded
-		const auto dataPath = fs::path(ofToDataPath("")) / "assets";
+		const auto assetsPath = fs::path(ofToDataPath("")) / "assets";
 		
 		for (const auto addon : this->addonsRegistered) {
 			//if addon = "" we're referring to root namespace
@@ -278,7 +279,7 @@ namespace ofxAssets {
 				continue;
 			}
 			
-			auto addonDataPath = dataPath;
+			auto addonDataPath = assetsPath;
 			if (!addon.empty()) {
 				addonDataPath /= addon;
 			}
@@ -302,6 +303,7 @@ namespace ofxAssets {
 		}
 		
 		this->initialised = true;
+		this->rebuildDirectoryWatchers();
 		ofNotifyEvent(evtLoad, this);
 	}
 	
@@ -317,10 +319,59 @@ namespace ofxAssets {
 	}
 
 	//----------
-	void Register::callbackFileModified(const Poco::DirectoryWatcher::DirectoryEvent & args) {
-		auto fileChanged = args.item.path();
-		for (auto asset : this->shaders) {
-			cout << fileChanged << " vs " << asset.second->getFilename() << endl;
+	void Register::update(ofEventArgs &) {
+		if(this->directoryWatchers.enabled) {
+			this->checkAssetsChanged();
 		}
+	}
+	
+	//----------
+	void Register::rebuildDirectoryWatchers() {
+		this->directoryWatchers.watchers.clear();
+		
+		auto makeWatcher = [this](shared_ptr<BaseAsset> asset) {
+			const auto assetPath = fs::path(asset->getFilename());
+			const auto directory = assetPath.parent_path();
+			if(this->directoryWatchers.watchers.find(directory) == this->directoryWatchers.watchers.end()) {
+				//we don't have a watcher for this directory, add one
+				auto watcher = make_shared<Poco::DirectoryWatcher>(directory.string());
+				watcher->itemModified += Poco::delegate(this, &Register::callbackFileModified);
+				this->directoryWatchers.watchers.insert(make_pair(directory, watcher));
+			}
+		};
+		
+		applyToAllAssets(makeWatcher);
+	}
+	
+	//----------
+	void Register::callbackFileModified(const Poco::DirectoryWatcher::DirectoryEvent & args) {
+		// Add to the cache of updated files (these will be reloaded on next update)
+		this->directoryWatchers.changedFilesMutex.lock();
+		this->directoryWatchers.changedFiles.insert(filesystem::path(args.item.path()));
+		this->directoryWatchers.changedFilesMutex.unlock();
+	}
+	
+	//----------
+	void Register::checkAssetsChanged() {
+		// This function is called when a directory watcher event occurs
+		// We check through the files flagged by the directoryWatcher and reload any associated assets
+		
+		//create a local copy of the flagged files and clear the buffer
+		set<filesystem::path> changedFiles;
+		{
+			this->directoryWatchers.changedFilesMutex.lock();
+			swap(changedFiles, this->directoryWatchers.changedFiles);
+			this->directoryWatchers.changedFilesMutex.unlock();
+		}
+		
+		//function which will reload an asset if its pattern matches a file which has changed
+		auto checkAsset = [& changedFiles](shared_ptr<BaseAsset> asset) {
+			if (asset->isAssociatedWith(changedFiles)) {
+				asset->reload();
+			}
+		};
+		
+		//apply this test function to all assets
+		this->applyToAllAssets(checkAsset);
 	}
 }

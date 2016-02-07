@@ -9,7 +9,7 @@
 		<string>46</string>
 		<key>objects</key>
 		<dict>
-			<key>A1DEB81A2206E56041F5AE81</key>
+			<key>3D71A6D125EA82B1D0A6B542</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.c.h</string>
@@ -18,13 +18,35 @@
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>src\ofxAssets.h</string>
+				<string>ofxAssets.h</string>
 				<key>path</key>
-				<string>../../../addons\ofxAssets/src\ofxAssets.h</string>
+				<string>../../../addons/ofxAssets/src/ofxAssets.h</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>27E2196400608B3A3CC26C4D</key>
+			<key>D6D9A3631B256390D73E2C18</key>
+			<dict>
+				<key>fileRef</key>
+				<string>13FF4A2D641AAE64D70ABCC6</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>13FF4A2D641AAE64D70ABCC6</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>30</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ofxAssets.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxAssets/src/ofxAssets.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>4308EFF5143EFAAAC347DD57</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.c.h</string>
@@ -33,20 +55,20 @@
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>src\ofxAssets\Sound.h</string>
+				<string>Sound.h</string>
 				<key>path</key>
-				<string>../../../addons\ofxAssets/src\ofxAssets\Sound.h</string>
+				<string>../../../addons/ofxAssets/src/ofxAssets/Sound.h</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>B713D9360B35EB5CDD237C09</key>
+			<key>69F41565AE8CB530C199B35F</key>
 			<dict>
 				<key>fileRef</key>
-				<string>2F343DE2B28F40C5D0A556C5</string>
+				<string>B207BA15FAB40EEE9106EA10</string>
 				<key>isa</key>
 				<string>PBXBuildFile</string>
 			</dict>
-			<key>2F343DE2B28F40C5D0A556C5</key>
+			<key>B207BA15FAB40EEE9106EA10</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.cpp.cpp</string>
@@ -55,13 +77,13 @@
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>src\ofxAssets\Sound.cpp</string>
+				<string>Sound.cpp</string>
 				<key>path</key>
-				<string>../../../addons\ofxAssets/src\ofxAssets\Sound.cpp</string>
+				<string>../../../addons/ofxAssets/src/ofxAssets/Sound.cpp</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>B9E4BB3C2843A91CB13EB891</key>
+			<key>3D95B36A7075725E92241889</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.c.h</string>
@@ -70,20 +92,20 @@
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>src\ofxAssets\Shader.h</string>
+				<string>Shader.h</string>
 				<key>path</key>
-				<string>../../../addons\ofxAssets/src\ofxAssets\Shader.h</string>
+				<string>../../../addons/ofxAssets/src/ofxAssets/Shader.h</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>7A0D9312F830057FB7EDDC25</key>
+			<key>D57027F36B35F3FF654824D9</key>
 			<dict>
 				<key>fileRef</key>
-				<string>5D6DA01FFB5CF7FC98619527</string>
+				<string>9CED095FF14A0932EE69B7A8</string>
 				<key>isa</key>
 				<string>PBXBuildFile</string>
 			</dict>
-			<key>5D6DA01FFB5CF7FC98619527</key>
+			<key>9CED095FF14A0932EE69B7A8</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.cpp.cpp</string>
@@ -92,13 +114,13 @@
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>src\ofxAssets\Shader.cpp</string>
+				<string>Shader.cpp</string>
 				<key>path</key>
-				<string>../../../addons\ofxAssets/src\ofxAssets\Shader.cpp</string>
+				<string>../../../addons/ofxAssets/src/ofxAssets/Shader.cpp</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>413DA52896914587626DD50F</key>
+			<key>A0D15E898E99721966EB62CB</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.c.h</string>
@@ -107,20 +129,20 @@
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>src\ofxAssets\Set.h</string>
+				<string>Set.h</string>
 				<key>path</key>
-				<string>../../../addons\ofxAssets/src\ofxAssets\Set.h</string>
+				<string>../../../addons/ofxAssets/src/ofxAssets/Set.h</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>AD51C14DA153B9A3280CD81B</key>
+			<key>B44B5599ADC860A956B01646</key>
 			<dict>
 				<key>fileRef</key>
-				<string>8367B3FF3AFEF08DA78D73B0</string>
+				<string>D729ECA86453DE065311E034</string>
 				<key>isa</key>
 				<string>PBXBuildFile</string>
 			</dict>
-			<key>8367B3FF3AFEF08DA78D73B0</key>
+			<key>D729ECA86453DE065311E034</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.cpp.cpp</string>
@@ -129,13 +151,13 @@
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>src\ofxAssets\Set.cpp</string>
+				<string>Set.cpp</string>
 				<key>path</key>
-				<string>../../../addons\ofxAssets/src\ofxAssets\Set.cpp</string>
+				<string>../../../addons/ofxAssets/src/ofxAssets/Set.cpp</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>32D80DA25424CE0ACD00E9D5</key>
+			<key>86D6C9324E8957D4B51BCFA8</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.c.h</string>
@@ -144,20 +166,20 @@
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>src\ofxAssets\Register.h</string>
+				<string>Register.h</string>
 				<key>path</key>
-				<string>../../../addons\ofxAssets/src\ofxAssets\Register.h</string>
+				<string>../../../addons/ofxAssets/src/ofxAssets/Register.h</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>B8A7302E6C97FED114E5F685</key>
+			<key>F3061312C884CB6931AC899E</key>
 			<dict>
 				<key>fileRef</key>
-				<string>4D152DD7FF7AFFA6F5F52AB2</string>
+				<string>87DC2B0A687258A832A3504F</string>
 				<key>isa</key>
 				<string>PBXBuildFile</string>
 			</dict>
-			<key>4D152DD7FF7AFFA6F5F52AB2</key>
+			<key>87DC2B0A687258A832A3504F</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.cpp.cpp</string>
@@ -166,13 +188,13 @@
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>src\ofxAssets\Register.cpp</string>
+				<string>Register.cpp</string>
 				<key>path</key>
-				<string>../../../addons\ofxAssets/src\ofxAssets\Register.cpp</string>
+				<string>../../../addons/ofxAssets/src/ofxAssets/Register.cpp</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>E1B28CB97E012269C5993ED6</key>
+			<key>CC333C075AA06FB210BE2266</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.c.h</string>
@@ -181,20 +203,20 @@
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>src\ofxAssets\Image.h</string>
+				<string>Image.h</string>
 				<key>path</key>
-				<string>../../../addons\ofxAssets/src\ofxAssets\Image.h</string>
+				<string>../../../addons/ofxAssets/src/ofxAssets/Image.h</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>D797054938CA15FBEFABE14D</key>
+			<key>5982B12539F35D02AB49803E</key>
 			<dict>
 				<key>fileRef</key>
-				<string>73ABCEFA0E4079358A7DC5FB</string>
+				<string>F7CA592F5516257EAC38A029</string>
 				<key>isa</key>
 				<string>PBXBuildFile</string>
 			</dict>
-			<key>73ABCEFA0E4079358A7DC5FB</key>
+			<key>F7CA592F5516257EAC38A029</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.cpp.cpp</string>
@@ -203,13 +225,13 @@
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>src\ofxAssets\Image.cpp</string>
+				<string>Image.cpp</string>
 				<key>path</key>
-				<string>../../../addons\ofxAssets/src\ofxAssets\Image.cpp</string>
+				<string>../../../addons/ofxAssets/src/ofxAssets/Image.cpp</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>469DB96DFF44D6D60222A1ED</key>
+			<key>60EE7A3C47BB4C564A6858BC</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.c.h</string>
@@ -218,20 +240,20 @@
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>src\ofxAssets\Font.h</string>
+				<string>Font.h</string>
 				<key>path</key>
-				<string>../../../addons\ofxAssets/src\ofxAssets\Font.h</string>
+				<string>../../../addons/ofxAssets/src/ofxAssets/Font.h</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>06E1A8B8A86D21D48AAC943C</key>
+			<key>48AA27BB22351E4FA5861B1A</key>
 			<dict>
 				<key>fileRef</key>
-				<string>B81432A89063829F4AB80B19</string>
+				<string>6DC6F426A806798D22023EAD</string>
 				<key>isa</key>
 				<string>PBXBuildFile</string>
 			</dict>
-			<key>B81432A89063829F4AB80B19</key>
+			<key>6DC6F426A806798D22023EAD</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.cpp.cpp</string>
@@ -240,13 +262,13 @@
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>src\ofxAssets\Font.cpp</string>
+				<string>Font.cpp</string>
 				<key>path</key>
-				<string>../../../addons\ofxAssets/src\ofxAssets\Font.cpp</string>
+				<string>../../../addons/ofxAssets/src/ofxAssets/Font.cpp</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>C4CAAE0DA09BE79433A3475B</key>
+			<key>1D28E8B5F753FEC36FA9F6F7</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.c.h</string>
@@ -255,20 +277,74 @@
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>src\ofxAssets\BaseAsset.h</string>
+				<string>BaseAsset.h</string>
 				<key>path</key>
-				<string>../../../addons\ofxAssets/src\ofxAssets\BaseAsset.h</string>
+				<string>../../../addons/ofxAssets/src/ofxAssets/BaseAsset.h</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
-			<key>E71257C4CF96F5EC0A9BE438</key>
+			<key>EFCDA0F3B5AD30B56470886B</key>
+			<dict>
+				<key>children</key>
+				<array>
+					<string>A1910C8597F22BAFEB2C87C9</string>
+					<string>1D28E8B5F753FEC36FA9F6F7</string>
+					<string>6DC6F426A806798D22023EAD</string>
+					<string>60EE7A3C47BB4C564A6858BC</string>
+					<string>F7CA592F5516257EAC38A029</string>
+					<string>CC333C075AA06FB210BE2266</string>
+					<string>87DC2B0A687258A832A3504F</string>
+					<string>86D6C9324E8957D4B51BCFA8</string>
+					<string>D729ECA86453DE065311E034</string>
+					<string>A0D15E898E99721966EB62CB</string>
+					<string>9CED095FF14A0932EE69B7A8</string>
+					<string>3D95B36A7075725E92241889</string>
+					<string>B207BA15FAB40EEE9106EA10</string>
+					<string>4308EFF5143EFAAAC347DD57</string>
+				</array>
+				<key>isa</key>
+				<string>PBXGroup</string>
+				<key>name</key>
+				<string>ofxAssets</string>
+				<key>sourceTree</key>
+				<string>&lt;group&gt;</string>
+			</dict>
+			<key>4C5AF0A9BE41EC68A067150D</key>
+			<dict>
+				<key>children</key>
+				<array>
+					<string>EFCDA0F3B5AD30B56470886B</string>
+					<string>13FF4A2D641AAE64D70ABCC6</string>
+					<string>3D71A6D125EA82B1D0A6B542</string>
+				</array>
+				<key>isa</key>
+				<string>PBXGroup</string>
+				<key>name</key>
+				<string>src</string>
+				<key>sourceTree</key>
+				<string>&lt;group&gt;</string>
+			</dict>
+			<key>2131F4950B84031A6EE74483</key>
+			<dict>
+				<key>children</key>
+				<array>
+					<string>4C5AF0A9BE41EC68A067150D</string>
+				</array>
+				<key>isa</key>
+				<string>PBXGroup</string>
+				<key>name</key>
+				<string>ofxAssets</string>
+				<key>sourceTree</key>
+				<string>&lt;group&gt;</string>
+			</dict>
+			<key>977E32123A8A07E1DB9A0D85</key>
 			<dict>
 				<key>fileRef</key>
-				<string>482C62ADCF9B2C7A9BCB8400</string>
+				<string>A1910C8597F22BAFEB2C87C9</string>
 				<key>isa</key>
 				<string>PBXBuildFile</string>
 			</dict>
-			<key>482C62ADCF9B2C7A9BCB8400</key>
+			<key>A1910C8597F22BAFEB2C87C9</key>
 			<dict>
 				<key>explicitFileType</key>
 				<string>sourcecode.cpp.cpp</string>
@@ -277,90 +353,9 @@
 				<key>isa</key>
 				<string>PBXFileReference</string>
 				<key>name</key>
-				<string>src\ofxAssets\BaseAsset.cpp</string>
+				<string>BaseAsset.cpp</string>
 				<key>path</key>
-				<string>../../../addons\ofxAssets/src\ofxAssets\BaseAsset.cpp</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>46575193D15E9311A1720A66</key>
-			<dict>
-				<key>fileRef</key>
-				<string>BF7FB87E7952F92DE13A75EB</string>
-				<key>isa</key>
-				<string>PBXBuildFile</string>
-			</dict>
-			<key>BF7FB87E7952F92DE13A75EB</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.cpp.cpp</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>src\ofxAssets.cpp</string>
-				<key>path</key>
-				<string>../../../addons\ofxAssets/src\ofxAssets.cpp</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>7D42E24E75BE7F3425A375D7</key>
-			<dict>
-				<key>fileRef</key>
-				<string>54DD24B4E5F5C8A618AE7802</string>
-				<key>isa</key>
-				<string>PBXBuildFile</string>
-			</dict>
-			<key>54DD24B4E5F5C8A618AE7802</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.cpp.cpp</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>src\testApp.cpp</string>
-				<key>path</key>
-				<string>src\testApp.cpp</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>B2AD926770259F4C697118FD</key>
-			<dict>
-				<key>fileRef</key>
-				<string>0BC8C4FE0158A18092F89F8E</string>
-				<key>isa</key>
-				<string>PBXBuildFile</string>
-			</dict>
-			<key>0BC8C4FE0158A18092F89F8E</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.cpp.cpp</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>src\main.cpp</string>
-				<key>path</key>
-				<string>src\main.cpp</string>
-				<key>sourceTree</key>
-				<string>SOURCE_ROOT</string>
-			</dict>
-			<key>62875505AD0AF2A471AACFCB</key>
-			<dict>
-				<key>explicitFileType</key>
-				<string>sourcecode.c.h</string>
-				<key>fileEncoding</key>
-				<string>30</string>
-				<key>isa</key>
-				<string>PBXFileReference</string>
-				<key>name</key>
-				<string>src\testApp.h</string>
-				<key>path</key>
-				<string>src\testApp.h</string>
+				<string>../../../addons/ofxAssets/src/ofxAssets/BaseAsset.cpp</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -478,7 +473,9 @@ IFS=$SAVED_IFS
 			<key>BB4B014C10F69532006C3DED</key>
 			<dict>
 				<key>children</key>
-				<array />
+				<array>
+					<string>2131F4950B84031A6EE74483</string>
+				</array>
 				<key>isa</key>
 				<string>PBXGroup</string>
 				<key>name</key>
@@ -632,8 +629,8 @@ IFS=$SAVED_IFS
 					<array>
 						<string>$(OF_CORE_HEADERS)</string>
 						<string>src</string>
-						<string>../../../addons\ofxAssets/src</string>
-						<string>../../../addons\ofxAssets/src\ofxAssets</string>
+						<string>../../../addons/ofxAssets/src</string>
+						<string>../../../addons/ofxAssets/src/ofxAssets</string>
 					</array>
 					<key>CONFIGURATION_BUILD_DIR</key>
 					<string>$(SRCROOT)/bin/</string>
@@ -692,8 +689,8 @@ IFS=$SAVED_IFS
 					<array>
 						<string>$(OF_CORE_HEADERS)</string>
 						<string>src</string>
-						<string>../../../addons\ofxAssets/src</string>
-						<string>../../../addons\ofxAssets/src\ofxAssets</string>
+						<string>../../../addons/ofxAssets/src</string>
+						<string>../../../addons/ofxAssets/src/ofxAssets</string>
 					</array>
 					<key>CONFIGURATION_BUILD_DIR</key>
 					<string>$(SRCROOT)/bin/</string>
@@ -750,16 +747,14 @@ IFS=$SAVED_IFS
 				<array>
 					<string>E4B69E200A3A1BDC003C02F2</string>
 					<string>E4B69E210A3A1BDC003C02F2</string>
-					<string>B2AD926770259F4C697118FD</string>
-					<string>7D42E24E75BE7F3425A375D7</string>
-					<string>46575193D15E9311A1720A66</string>
-					<string>E71257C4CF96F5EC0A9BE438</string>
-					<string>06E1A8B8A86D21D48AAC943C</string>
-					<string>D797054938CA15FBEFABE14D</string>
-					<string>B8A7302E6C97FED114E5F685</string>
-					<string>AD51C14DA153B9A3280CD81B</string>
-					<string>7A0D9312F830057FB7EDDC25</string>
-					<string>B713D9360B35EB5CDD237C09</string>
+					<string>977E32123A8A07E1DB9A0D85</string>
+					<string>48AA27BB22351E4FA5861B1A</string>
+					<string>5982B12539F35D02AB49803E</string>
+					<string>F3061312C884CB6931AC899E</string>
+					<string>B44B5599ADC860A956B01646</string>
+					<string>D57027F36B35F3FF654824D9</string>
+					<string>69F41565AE8CB530C199B35F</string>
+					<string>D6D9A3631B256390D73E2C18</string>
 				</array>
 				<key>isa</key>
 				<string>PBXSourcesBuildPhase</string>
@@ -845,8 +840,8 @@ IFS=$SAVED_IFS
 					<array>
 						<string>$(OF_CORE_HEADERS)</string>
 						<string>src</string>
-						<string>../../../addons\ofxAssets/src</string>
-						<string>../../../addons\ofxAssets/src\ofxAssets</string>
+						<string>../../../addons/ofxAssets/src</string>
+						<string>../../../addons/ofxAssets/src/ofxAssets</string>
 					</array>
 					<key>COMBINE_HIDPI_IMAGES</key>
 					<string>YES</string>
@@ -895,8 +890,8 @@ IFS=$SAVED_IFS
 					<array>
 						<string>$(OF_CORE_HEADERS)</string>
 						<string>src</string>
-						<string>../../../addons\ofxAssets/src</string>
-						<string>../../../addons\ofxAssets/src\ofxAssets</string>
+						<string>../../../addons/ofxAssets/src</string>
+						<string>../../../addons/ofxAssets/src/ofxAssets</string>
 					</array>
 					<key>COMBINE_HIDPI_IMAGES</key>
 					<string>YES</string>
@@ -942,9 +937,6 @@ IFS=$SAVED_IFS
 					<string>E4B69E1D0A3A1BDC003C02F2</string>
 					<string>E4B69E1E0A3A1BDC003C02F2</string>
 					<string>E4B69E1F0A3A1BDC003C02F2</string>
-					<string>62875505AD0AF2A471AACFCB</string>
-					<string>0BC8C4FE0158A18092F89F8E</string>
-					<string>54DD24B4E5F5C8A618AE7802</string>
 				</array>
 				<key>isa</key>
 				<string>PBXGroup</string>
