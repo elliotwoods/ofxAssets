@@ -209,8 +209,13 @@ namespace ofxAssets {
 		auto addonAssetsDestination = fs::path(ofToDataPath("assets/" + addonName));
 		if (fs::exists(addonAssetsSource)) {
 			ofLogVerbose("ofxAssets") << "Copying in addon files from " << addonAssetsSource;
-			fs::remove_all(addonAssetsDestination);
-			copyDir(addonAssetsSource, addonAssetsDestination);
+			try {
+				fs::remove_all(addonAssetsDestination);
+				copyDir(addonAssetsSource, addonAssetsDestination);
+			}
+			catch (const std::exception & e) {
+				ofLogWarning("ofxAssets") << e.what();
+			}
 		} else {
 			ofLogWarning("ofxAssets") << "Cannot copy in addon assets since folder doesn't exist : " << addonAssetsSource;
 		}
