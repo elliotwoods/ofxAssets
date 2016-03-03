@@ -19,42 +19,48 @@ namespace ofxAssets {
 	//----------
 	template<typename Type>
 	void Set<Type>::addDirectory(const fs::path & path, const Namespace & targetNamespace) {
-		if (fs::is_directory(path)) {
-			for (const auto & entry : fs::directory_iterator(path)) {
-				const auto & path = entry.path();
-				
-				if (fs::is_directory(path)) {
-					//it's a subfolder if so traverse it
-					auto innerNamespace = targetNamespace;
-					innerNamespace.push_back(path.filename().string());
-					this->addDirectory(path, innerNamespace);
-				}
-				else {
-					//it's an asset
-					auto extension = ofToLower(path.extension().string());
-					if (regex_match(extension, this->mask)) {
-						//matches the extension mask
-						string name = path.stem().string();
-						
-						//get the true asset name
-						transformName(name, targetNamespace);
-						
-						//if we already have it ignore it
-						if(this->has(name)) {
-							continue;
+		try {
+			if (fs::is_directory(path)) {
+				for (const auto & entry : fs::directory_iterator(path)) {
+					const auto & path = entry.path();
+					
+					if (fs::is_directory(path)) {
+						//it's a subfolder if so traverse it
+						auto innerNamespace = targetNamespace;
+						innerNamespace.push_back(path.filename().string());
+						this->addDirectory(path, innerNamespace);
+					}
+					else {
+						//it's an asset
+						auto extension = ofToLower(path.extension().string());
+						if (regex_match(extension, this->mask)) {
+							//matches the extension mask
+							string name = path.stem().string();
+							
+							//get the true asset name
+							transformName(name, targetNamespace);
+							
+							//if we already have it ignore it
+							if(this->has(name)) {
+								continue;
+							}
+							
+							//create the asset
+							auto asset = make_shared<Type>();
+							asset->setPath(path);
+							asset->reload();
+							
+							//register the asset
+							pair<string, shared_ptr<Type>> inserter(name, asset);
+							this->insert(inserter);
 						}
-						
-						//create the asset
-						auto asset = make_shared<Type>();
-						asset->setPath(path);
-						asset->reload();
-						
-						//register the asset
-						pair<string, shared_ptr<Type>> inserter(name, asset);
-						this->insert(inserter);
 					}
 				}
 			}
+		}
+		catch(...)
+		{
+			ofLogError("ofxAssets") << "Adding directory [" << path.string() << "] failed";
 		}
 	}
 	

@@ -205,19 +205,24 @@ namespace ofxAssets {
 		//whilst we're in debug build mode, we'll actually copy over the assets from the addon's folder
 #if defined(__DEBUGGING__) || defined(_DEBUG)
 		//if we're still debugging in the build location, copy in latest assets
-		auto addonAssetsSource = fs::path(ofToDataPath("../../../../../addons/" + addonName + "/data/assets/" + addonName + "/"));
-		auto addonAssetsDestination = fs::path(ofToDataPath("assets/" + addonName));
-		if (fs::exists(addonAssetsSource)) {
-			ofLogVerbose("ofxAssets") << "Copying in addon files from " << addonAssetsSource;
-			try {
-				fs::remove_all(addonAssetsDestination);
-				copyDir(addonAssetsSource, addonAssetsDestination);
+		try {
+			auto addonAssetsSource = fs::path(ofToDataPath("../../../../../addons/" + addonName + "/data/assets/" + addonName + "/"));
+			auto addonAssetsDestination = fs::path(ofToDataPath("assets/" + addonName));
+			if (fs::exists(addonAssetsSource)) {
+				ofLogVerbose("ofxAssets") << "Copying in addon files from " << addonAssetsSource;
+				try {
+					fs::remove_all(addonAssetsDestination);
+					copyDir(addonAssetsSource, addonAssetsDestination);
+				}
+				catch (const std::exception & e) {
+					ofLogWarning("ofxAssets") << e.what();
+				}
+			} else {
+				ofLogWarning("ofxAssets") << "Cannot copy in addon assets since folder doesn't exist : " << addonAssetsSource;
 			}
-			catch (const std::exception & e) {
-				ofLogWarning("ofxAssets") << e.what();
-			}
-		} else {
-			ofLogWarning("ofxAssets") << "Cannot copy in addon assets since folder doesn't exist : " << addonAssetsSource;
+		}
+		catch(...) {
+			ofLogError("ofxAssets") << "Copying assets for addon  [" << addonName << "] failed.";
 		}
 #endif
 	}
