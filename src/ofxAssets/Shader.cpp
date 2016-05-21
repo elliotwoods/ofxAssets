@@ -12,8 +12,18 @@ namespace ofxAssets {
 		const auto withoutExtension = path.parent_path() / path.stem();
 		const auto absolutePath = filesystem::absolute(withoutExtension);
 		
-		auto success = this->shader.load(absolutePath.string());
-		
+		const auto stem = absolutePath.string();
+
+		bool success = false;
+		if (ofFile::doesFileExist(stem + ".geom")
+			&& ofFile::doesFileExist(stem + ".vert")
+			&& ofFile::doesFileExist(stem + ".frag")) {
+			success = this->shader.load(stem + ".vert", stem + ".frag", stem + ".geom");
+		}
+		else {
+			success = this->shader.load(absolutePath.string());
+		}
+
 		if(!success) {
 			ofLogWarning("ofxAssets::Shader") << "Failed to load " << absolutePath.string();
 		}
