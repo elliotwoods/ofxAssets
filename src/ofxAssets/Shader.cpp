@@ -1,5 +1,7 @@
 #include "Shader.h"
 
+#include "ofLog.h"
+
 namespace ofxAssets {
 	//----------
 	regex Shader::getMask() const {

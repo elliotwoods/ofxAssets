@@ -16,8 +16,7 @@
 #include <string>
 #include <regex>
 
-#include "Poco/DirectoryWatcher.h"
-#include "Poco/Delegate.h"
+#include "Watchdog.h"
 
 namespace ofxAssets {
 	//setup singleton in class header
@@ -102,10 +101,10 @@ namespace ofxAssets {
 
 		
 		void rebuildDirectoryWatchers();
-		void callbackFileModified(const Poco::DirectoryWatcher::DirectoryEvent &);
+		void callbackFileModified(const filesystem::path &);
 		void checkAssetsChanged();
 		struct {
-			map<filesystem::path, shared_ptr<Poco::DirectoryWatcher>> watchers;
+			set<filesystem::path> watchedPaths;
 			bool enabled = false;
 			
 			set<filesystem::path> changedFiles;

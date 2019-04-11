@@ -26,63 +26,63 @@ namespace ofxAssets {
 		ofAddListener(ofEvents().update, this, &Register::update);
 		this->clear();
 	}
-	
+
 	//---------
 	Register::~Register() {
 		ofRemoveListener(ofEvents().update, this, &Register::update);
 	}
-	
+
 	//---------
 	void Register::refresh() {
 		this->unload();
 		this->load();
 	}
-	
+
 	//---------
 	void Register::clear() {
 		this->unload();
 		this->addonsRegistered.clear();
 		this->addonsRegistered.insert(""); // add the root namespace
 	}
-	
+
 	//---------
 	ofTrueTypeFont & Register::getFont(string name, int size) {
 		return this->getFontPointer(name)->get(size);
 	}
-	
+
 	//---------
 	ofImage & Register::getImage(string name) {
 		return this->getImagePointer(name)->get();
 	}
-	
+
 	//---------
 	ofShader & Register::getShader(string name) {
 		return this->getShaderPointer(name)->get();
 	}
-	
+
 	//---------
 	ofSoundPlayer & Register::getSound(string name) {
 		return this->getSoundPointer(name)->get();
 	}
-	
+
 	//---------
 	shared_ptr<Font> Register::getFontPointer(string name) {
 		this->checkLoaded();
 		return this->fonts[name];
 	}
-	
+
 	//---------
 	shared_ptr<Image> Register::getImagePointer(string name) {
 		this->checkLoaded();
 		return this->images[name];
 	}
-	
+
 	//---------
 	shared_ptr<Shader> Register::getShaderPointer(string name) {
 		this->checkLoaded();
 		return this->shaders[name];
 	}
-	
+
 	//---------
 	shared_ptr<Sound> Register::getSoundPointer(string name) {
 		this->checkLoaded();
@@ -106,13 +106,13 @@ namespace ofxAssets {
 		this->checkLoaded();
 		return this->shaders;
 	}
-	
+
 	//---------
 	Set<Sound> & Register::getSounds() {
 		this->checkLoaded();
 		return this->sounds;
 	}
-	
+
 #if defined(__DEBUGGING__) || defined(_DEBUG)
 	//---------
 	//when in debug mode, we copy an addon's asset folder locally
@@ -127,23 +127,23 @@ namespace ofxAssets {
 				)
 			{
 				std::cerr << "Source directory " << source.string()
-				<< " does not exist or is not a directory." << '\n'
-				;
+					<< " does not exist or is not a directory." << '\n'
+					;
 				return false;
 			}
 			if (fs::exists(destination))
 			{
 				std::cerr << "Destination directory " << destination.string()
-				<< " already exists." << '\n'
-				;
+					<< " already exists." << '\n'
+					;
 				return false;
 			}
 			// Create the destination directory
 			if (!fs::create_directories(destination))
 			{
 				std::cerr << "Unable to create destination directory"
-				<< destination.string() << '\n'
-				;
+					<< destination.string() << '\n'
+					;
 				return false;
 			}
 		}
@@ -154,9 +154,9 @@ namespace ofxAssets {
 		}
 		// Iterate through the source directory
 		for (
-			 fs::directory_iterator file(source);
-			 file != fs::directory_iterator(); ++file
-			 )
+			fs::directory_iterator file(source);
+			file != fs::directory_iterator(); ++file
+			)
 		{
 			try
 			{
@@ -166,9 +166,9 @@ namespace ofxAssets {
 					// Found directory: Recursion
 					if (
 						!copyDir(
-								 current,
-								 destination / current.filename()
-								 )
+							current,
+							destination / current.filename()
+						)
 						)
 					{
 						return false;
@@ -178,9 +178,9 @@ namespace ofxAssets {
 				{
 					// Found file: Copy
 					fs::copy_file(
-								  current,
-								  destination / current.filename()
-								  );
+						current,
+						destination / current.filename()
+					);
 				}
 			}
 			catch (fs::filesystem_error const & e)
@@ -191,17 +191,17 @@ namespace ofxAssets {
 		return true;
 	}
 #endif
-	
+
 	//---------
 	void Register::addAddon(string addonName) {
 		if (this->addonsRegistered.find(addonName) != this->addonsRegistered.end()) {
 			//addon is already registered
 			return;
 		}
-		
+
 		this->addonsRegistered.insert(addonName);
 		this->initialised = false;
-		
+
 		//whilst we're in debug build mode, we'll actually copy over the assets from the addon's folder
 #if defined(__DEBUGGING__) || defined(_DEBUG)
 		//if we're still debugging in the build location, copy in latest assets
@@ -217,16 +217,17 @@ namespace ofxAssets {
 				catch (const std::exception & e) {
 					ofLogWarning("ofxAssets") << e.what();
 				}
-			} else {
+			}
+			else {
 				ofLogWarning("ofxAssets") << "Cannot copy in addon assets since folder doesn't exist : " << addonAssetsSource;
 			}
 		}
-		catch(...) {
+		catch (...) {
 			ofLogError("ofxAssets") << "Copying assets for addon  [" << addonName << "] failed.";
 		}
 #endif
 	}
-	
+
 	//---------
 	void Register::setDirectoryWatcherEnabled(bool directoryWatcherEnabled) {
 		if (directoryWatcherEnabled == this->getDirectoryWatcherEnabled()) {
@@ -234,8 +235,10 @@ namespace ofxAssets {
 		}
 
 		if (!directoryWatcherEnabled) {
-			this->directoryWatchers.enabled = false;
-			this->directoryWatchers.watchers.clear();
+			for (const auto & watchedPath : this->directoryWatchers.watchedPaths) {
+				wd::unwatch(watchedPath);
+			}
+			this->directoryWatchers.watchedPaths.clear();
 		}
 		else {
 			//flag this to happen on next update (we use flags because we rebuild on add events)
@@ -254,7 +257,7 @@ namespace ofxAssets {
 		this->checkLoaded();
 		return this->fonts[name]->getSizes();
 	}
-	
+
 #pragma mark protected
 	//---------
 	void transformName(string &name, vector<string> outputNamespace) {
@@ -264,7 +267,7 @@ namespace ofxAssets {
 		}
 		name = flatNamespace + name;
 	}
-	
+
 	//---------
 	bool Register::isInitialised() const {
 		return this->initialised;
@@ -272,92 +275,92 @@ namespace ofxAssets {
 
 	//---------
 	void Register::checkLoaded() {
-		if(!this->isInitialised()) {
+		if (!this->isInitialised()) {
 			this->load();
 		}
 	}
-	
+
 	//---------
 	void Register::load() {
 		//we call this function to ensure that files are loaded
 		const auto assetsPath = fs::path(ofToDataPath("")) / "assets";
-		
+
 		for (const auto addon : this->addonsRegistered) {
 			//if addon = "" we're referring to root namespace
 			if (this->addonsLoaded.find(addon) != this->addonsLoaded.end()) {
 				//we've already loaded this addon. call refresh() if you want to load it again
 				continue;
 			}
-			
+
 			auto addonDataPath = assetsPath;
 			if (!addon.empty()) {
 				addonDataPath /= addon;
 			}
-			
+
 			if (!fs::is_directory(addonDataPath)) {
 				ofLogWarning("ofxAssets") << "Assets data path [" << addonDataPath.string() << "] cannot be found.";
 				continue;
 			}
-			
+
 			vector<string> outputNamespace;
 			if (!addon.empty()) {
 				outputNamespace.push_back(addon);
 			}
-			
+
 			this->fonts.addDirectory(addonDataPath / "fonts", outputNamespace);
 			this->images.addDirectory(addonDataPath / "images", outputNamespace);
 			this->shaders.addDirectory(addonDataPath / "shaders", outputNamespace);
 			this->sounds.addDirectory(addonDataPath / "sounds", outputNamespace);
-			
+
 			this->addonsLoaded.insert(addon);
 		}
-		
+
 		this->initialised = true;
 		this->rebuildDirectoryWatchers();
 		ofNotifyEvent(evtLoad, this);
 	}
-	
+
 	//----------
 	void Register::unload() {
 		this->fonts.clear();
 		this->images.clear();
 		this->shaders.clear();
 		this->sounds.clear();
-		
+
 		this->initialised = false;
 		this->addonsLoaded.clear();
 	}
 
 	//----------
 	void Register::update(ofEventArgs &) {
-		if(this->directoryWatchers.enabled) {
+		if (this->directoryWatchers.enabled) {
 			this->checkAssetsChanged();
 		}
 	}
-	
+
 	//----------
 	void Register::rebuildDirectoryWatchers() {
-		this->directoryWatchers.watchers.clear();
+		// we don't use wd::unwatchAll() in case anybody else is using it
+		for (const auto & watchedPath : this->directoryWatchers.watchedPaths) {
+			wd::unwatch(watchedPath);
+		}
+		this->directoryWatchers.watchedPaths.clear();
 		
 		auto makeWatcher = [this](shared_ptr<BaseAsset> asset) {
-			const auto assetPath = fs::path(asset->getFilename());
-			const auto directory = assetPath.parent_path();
-			if(this->directoryWatchers.watchers.find(directory) == this->directoryWatchers.watchers.end()) {
-				//we don't have a watcher for this directory, add one
-				auto watcher = make_shared<Poco::DirectoryWatcher>(directory.string());
-				watcher->itemModified += Poco::delegate(this, &Register::callbackFileModified);
-				this->directoryWatchers.watchers.insert(make_pair(directory, watcher));
-			}
+			const auto assetPath = filesystem::path(asset->getFilename());
+			wd::watch(assetPath, [this](const filesystem::path & path) {
+				this->callbackFileModified(path);
+			});
 		};
 		
 		applyToAllAssets(makeWatcher);
 	}
 	
 	//----------
-	void Register::callbackFileModified(const Poco::DirectoryWatcher::DirectoryEvent & args) {
+	void Register::callbackFileModified(const filesystem::path & path) {
 		// Add to the cache of updated files (these will be reloaded on next update)
 		this->directoryWatchers.changedFilesMutex.lock();
-		this->directoryWatchers.changedFiles.insert(filesystem::path(args.item.path()));
+		this->directoryWatchers.changedFiles.insert(path);
 		this->directoryWatchers.changedFilesMutex.unlock();
 	}
 	
