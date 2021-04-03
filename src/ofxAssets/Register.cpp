@@ -206,8 +206,8 @@ namespace ofxAssets {
 #if defined(__DEBUGGING__) || defined(_DEBUG)
 		//if we're still debugging in the build location, copy in latest assets
 		try {
-			auto addonAssetsSource = fs::path(ofToDataPath("../../../../../addons/" + addonName + "/data/assets/" + addonName + "/"));
-			auto addonAssetsDestination = fs::path(ofToDataPath("assets/" + addonName));
+			auto addonAssetsSource = fs::path(ofToDataPath("../../../../../addons/" + addonName + "/data/assets/" + addonName + "/", true));
+			auto addonAssetsDestination = fs::path(ofToDataPath("assets/" + addonName, true));
 			if (fs::exists(addonAssetsSource)) {
 				ofLogVerbose("ofxAssets") << "Copying in addon files from " << addonAssetsSource;
 				try {
@@ -283,7 +283,7 @@ namespace ofxAssets {
 	//---------
 	void Register::load() {
 		//we call this function to ensure that files are loaded
-		const auto assetsPath = fs::path(ofToDataPath("")) / "assets";
+		const auto assetsPath = fs::path(ofToDataPath("", true)) / "assets";
 
 		for (const auto addon : this->addonsRegistered) {
 			//if addon = "" we're referring to root namespace
