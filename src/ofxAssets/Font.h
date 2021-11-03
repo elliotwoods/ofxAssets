@@ -12,7 +12,11 @@ namespace ofxAssets {
 		ofTrueTypeFont & get(int size);
 		
 		vector<int> getSizes() const;
+
+		void setFullCharacterSetEnabled(bool);
+		bool getFullCharacterSetEnabled() const;
 	protected:
 		map<int, ofTrueTypeFont> sizes;
+		bool fullCharacterSetEnabled = false;
 	};
 }
