@@ -37,6 +37,21 @@ namespace ofxAssets {
 	}
 
 	//----------
+	void Font::setContoursEnabled(bool contoursEnabled) {
+		if (contoursEnabled != this->contoursEnabled) {
+			this->contoursEnabled = contoursEnabled;
+
+			// clear out previously loaded fonts
+			this->sizes.clear();
+		}
+	}
+
+	//----------
+	bool Font::getContoursEnabled() const {
+		return this->contoursEnabled;
+	}
+
+	//----------
 	ofTrueTypeFont & Font::get(int size) {
 		auto findFont = this->sizes.find(size);
 		if(findFont != this->sizes.end()) {
@@ -53,7 +68,7 @@ namespace ofxAssets {
 				, size);
 			{
 				settings.antialiased = true;
-				settings.contours = true;
+				settings.contours = contoursEnabled;
 				if (this->fullCharacterSetEnabled) {
 					// ranges for font awesome
 					settings.addRange(ofUnicode::range{

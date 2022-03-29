@@ -15,8 +15,12 @@ namespace ofxAssets {
 
 		void setFullCharacterSetEnabled(bool);
 		bool getFullCharacterSetEnabled() const;
+
+		void setContoursEnabled(bool);
+		bool getContoursEnabled() const;
 	protected:
 		map<int, ofTrueTypeFont> sizes;
+		bool contoursEnabled = true;
 		bool fullCharacterSetEnabled = false;
 	};
 }
