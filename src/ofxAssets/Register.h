@@ -40,17 +40,23 @@ namespace ofxAssets {
 		ofTrueTypeFont & getFont(string name, int size);
 		ofImage & getImage(string name);
 		ofShader & getShader(string name);
+#ifndef TARGET_NO_SOUND
 		ofSoundPlayer & getSound(string name);
+#endif
 		
 		shared_ptr<Font> getFontPointer(string name);
 		shared_ptr<Image> getImagePointer(string name);
 		shared_ptr<Shader> getShaderPointer(string name);
+#ifndef TARGET_NO_SOUND
 		shared_ptr<Sound> getSoundPointer(string name);
+#endif
 		
 		Set<Font> & getFonts();
 		Set<Image> & getImages();
 		Set<Shader> & getShaders();
+#ifndef TARGET_NO_SOUND
 		Set<Sound> & getSounds();
+#endif
 		
 		vector<int> getFontSizes(string name);
 		
@@ -77,9 +83,11 @@ namespace ofxAssets {
 			for(auto asset : this->shaders) {
 				function(asset.second);
 			}
+#ifndef TARGET_NO_SOUND
 			for(auto asset : this->sounds) {
 				function(asset.second);
 			}
+#endif
 		}
 		
 		bool isInitialised() const;
@@ -95,7 +103,9 @@ namespace ofxAssets {
 		Set<Font> fonts;
 		Set<Image> images;
 		Set<Shader> shaders;
+#ifndef TARGET_NO_SOUND
 		Set<Sound> sounds;
+#endif
 		
 		bool initialised = false;
 

@@ -1,5 +1,7 @@
 #include "Sound.h"
 
+#ifndef TARGET_NO_SOUND
+
 #ifdef HAS_OFXAUDIODECODER
 #include "ofxAudioDecoder.h"
 #endif
@@ -28,3 +30,5 @@ namespace ofxAssets {
 		return this->buffer;
 	}
 }
+
+#endif

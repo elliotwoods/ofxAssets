@@ -25,10 +25,12 @@ namespace ofxAssets {
 		return Register::X().getShader(name);
 	}
 	
+#ifndef TARGET_NO_SOUND
 	//----------
 	ofSoundPlayer & sound(const string & name) {
 		return Register::X().getSound(name);
 	}
+#endif
 	
 	//----------
 	bool hasFont(const string & name) {
@@ -61,8 +63,10 @@ namespace ofxAssets {
 		return Register::X().getShaders().has(name);
 	}
 	
+#ifndef TARGET_NO_SOUND
 	//----------
 	bool hasSound(const string & name) {
 		return Register::X().getSounds().has(name);
 	}
+#endif
 }

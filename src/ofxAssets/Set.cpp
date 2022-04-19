@@ -107,5 +107,7 @@ namespace ofxAssets {
 	template class Set<Font>;
 	template class Set<Image>;
 	template class Set<Shader>;
+#ifndef TARGET_NO_SOUND
 	template class Set<Sound>;
+#endif
 }

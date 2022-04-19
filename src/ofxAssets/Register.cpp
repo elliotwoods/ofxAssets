@@ -60,10 +60,12 @@ namespace ofxAssets {
 		return this->getShaderPointer(name)->get();
 	}
 
+#ifndef TARGET_NO_SOUND
 	//---------
 	ofSoundPlayer & Register::getSound(string name) {
 		return this->getSoundPointer(name)->get();
 	}
+#endif
 
 	//---------
 	shared_ptr<Font> Register::getFontPointer(string name) {
@@ -83,11 +85,13 @@ namespace ofxAssets {
 		return this->shaders[name];
 	}
 
+#ifndef TARGET_NO_SOUND
 	//---------
 	shared_ptr<Sound> Register::getSoundPointer(string name) {
 		this->checkLoaded();
 		return this->sounds[name];
 	}
+#endif
 
 	//---------
 	Set<Font> & Register::getFonts() {
@@ -107,11 +111,13 @@ namespace ofxAssets {
 		return this->shaders;
 	}
 
+#ifndef TARGET_NO_SOUND
 	//---------
 	Set<Sound> & Register::getSounds() {
 		this->checkLoaded();
 		return this->sounds;
 	}
+#endif
 
 #if defined(__DEBUGGING__) || defined(_DEBUG)
 	//---------
@@ -310,7 +316,9 @@ namespace ofxAssets {
 			this->fonts.addDirectory(addonDataPath / "fonts", outputNamespace);
 			this->images.addDirectory(addonDataPath / "images", outputNamespace);
 			this->shaders.addDirectory(addonDataPath / "shaders", outputNamespace);
+#ifndef TARGET_NO_SOUND
 			this->sounds.addDirectory(addonDataPath / "sounds", outputNamespace);
+#endif
 
 			this->addonsLoaded.insert(addon);
 		}
@@ -325,7 +333,9 @@ namespace ofxAssets {
 		this->fonts.clear();
 		this->images.clear();
 		this->shaders.clear();
+#ifndef TARGET_NO_SOUND
 		this->sounds.clear();
+#endif
 
 		this->initialised = false;
 		this->addonsLoaded.clear();

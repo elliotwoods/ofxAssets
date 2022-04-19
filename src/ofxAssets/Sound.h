@@ -4,6 +4,7 @@
 #include "ofSoundPlayer.h"
 #include "ofSoundBuffer.h"
 
+#ifndef TARGET_NO_SOUND
 namespace ofxAssets {
 	class Sound : public BaseAsset {
 	public:
@@ -18,3 +19,4 @@ namespace ofxAssets {
 		ofSoundBuffer buffer; /// Note : you need ofxAudioDecoder in your project for this to be filled. And define HAS_OFXAUDIODECODER in your project preprocessor flags
 	};
 }
+#endif
