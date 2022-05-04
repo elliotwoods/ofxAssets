@@ -1,10 +1,11 @@
 #pragma once
 
+#ifndef TARGET_NO_SOUND
+
 #include "BaseAsset.h"
 #include "ofSoundPlayer.h"
 #include "ofSoundBuffer.h"
 
-#ifndef TARGET_NO_SOUND
 namespace ofxAssets {
 	class Sound : public BaseAsset {
 	public:
