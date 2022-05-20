@@ -29,10 +29,14 @@
 #include <memory>
 #include <atomic>
 #include <mutex>
+#include "ofConstants.h"
 
 //hacked to this for our oF version
+#if OF_USING_STD_FS
+namespace ci { namespace fs = std::filesystem; }
+#else
 namespace ci { namespace fs = boost::filesystem; }
-
+#endif
 
 // Windows Issue :
 // For the moment the overloaded version of wd::watch has a different name on windows
@@ -100,7 +104,11 @@ public:
         watchImpl( ci::fs::path() );
     }
     //! Sets the last modification time of a file or directory. by default sets the time to the current time
+#if OF_USING_STD_FS
+    static void touch( const ci::fs::path &path,  std::filesystem::file_time_type time =  std::filesystem::file_time_type::clock::now() )
+#else
     static void touch( const ci::fs::path &path, std::time_t time = std::time( nullptr ) )
+#endif
     {
         
         // if the file or directory exists change its last write time
@@ -374,8 +382,10 @@ protected:
 		bool hasChanged( const ci::fs::path &path )
         {
             // get the last modification time
+            
+
             auto time = ci::fs::last_write_time( path );
-            // add a new modification time to the map
+
             std::string key = path.string();
             if( mModificationTimes.find( key ) == mModificationTimes.end() ) {
                 mModificationTimes[ key ] = time;
@@ -395,7 +405,11 @@ protected:
         std::string                                             mFilter;
         std::function<void(const ci::fs::path&)>                mCallback;
         std::function<void(const std::vector<ci::fs::path>&)>   mListCallback;
+#if OF_USING_STD_FS
+        std::map< std::string, std::filesystem::file_time_type > mModificationTimes;
+#else
         std::map< std::string, time_t >                         mModificationTimes;
+#endif
     };
     
     friend class SleepyWatchdog;
