@@ -65,7 +65,7 @@ class WatchedFileSystemExc : public std::exception {
 public:
     WatchedFileSystemExc( const ci::fs::path &path )
     {
-        sprintf( mMessage, "Failed to find file or directory at: %s", path.c_str() );
+        snprintf( mMessage, sizeof(mMessage), "Failed to find file or directory at: %s", path.string().c_str() );
     }
     
     virtual const char * what() const throw() { return mMessage; }
