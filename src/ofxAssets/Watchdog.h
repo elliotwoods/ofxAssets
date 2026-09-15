@@ -31,7 +31,10 @@
 #include <mutex>
 
 //hacked to this for our oF version
-namespace ci { namespace fs = boost::filesystem; }
+#include <filesystem>
+#include <functional>
+#include <chrono>
+namespace ci { namespace fs = std::filesystem; }
 
 
 // Windows Issue :
@@ -105,13 +108,13 @@ public:
         
         // if the file or directory exists change its last write time
         if( ci::fs::exists( path ) ){
-            ci::fs::last_write_time( path, time );
+            ci::fs::last_write_time( path, ci::fs::file_time_type::clock::now() + std::chrono::duration_cast<ci::fs::file_time_type::duration>(std::chrono::system_clock::from_time_t(time) - std::chrono::system_clock::now()) );
             return;
         }
         // if not, visit each path if there's a wildcard
         if( path.string().find( "*" ) != std::string::npos ){
             visitWildCardPath( path, [time]( const ci::fs::path &p ){
-                ci::fs::last_write_time( p, time );
+                ci::fs::last_write_time( p, ci::fs::file_time_type::clock::now() + std::chrono::duration_cast<ci::fs::file_time_type::duration>(std::chrono::system_clock::from_time_t(time) - std::chrono::system_clock::now()) );
                 return false;
             } );
         }
@@ -395,7 +398,7 @@ protected:
         std::string                                             mFilter;
         std::function<void(const ci::fs::path&)>                mCallback;
         std::function<void(const std::vector<ci::fs::path>&)>   mListCallback;
-        std::map< std::string, time_t >                         mModificationTimes;
+        std::map< std::string, ci::fs::file_time_type >                         mModificationTimes;
     };
     
     friend class SleepyWatchdog;
